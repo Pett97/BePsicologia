@@ -1,6 +1,8 @@
-## Problem Track
-
-"Problem Track" is the ultimate solution for organizations seeking to enhance their problem resolution processes, drive operational efficiency, and deliver exceptional customer experiences.
+# ProjetoBack-End
+Projeto desenvolvido na disciplina de Desenvolvimento de Aplicações Back-End do Curso de Tecnologia em Sistemas para Internet
+# Alunos 
+Peterson Henrique de Padua
+Rafael Rodrigures Padilha
 
 ### Dependências
 
@@ -12,8 +14,8 @@
 #### Clone Repository
 
 ```
-$ git clone git@github.com:SI-DABE/problem-track.git
-$ cd problem-track
+$ git clone https://github.com/Pett97/BePsicologia.git
+$ cd BePsicologia
 ```
 
 #### Define the env variables
