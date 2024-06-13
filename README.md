@@ -1,9 +1,93 @@
-### Welcome to BePsicologia
-a solution for the efficient and safe management of psychology clinics. Developed with a focus on the specific needs of psychologists, administrators and mental health teams, our software offers a robust and intuitive platform to ensure data security, patient management and authorized access control.
+## Problem Track
 
+"Problem Track" is the ultimate solution for organizations seeking to enhance their problem resolution processes, drive operational efficiency, and deliver exceptional customer experiences.
 
-### Bem-vindo ao BePsicologia
-uma solução para a gestão eficiente e segura de clínicas de psicologia. Desenvolvido com foco nas necessidades específicas de psicólogos, administradores e equipes de saúde mental, nosso software oferece uma plataforma robusta e intuitiva para garantir a segurança dos dados, o gerenciamento de pacientes e o controle de acesso autorizado.
+### Dependências
 
-### Wiki [WiKI](https://github.com/Pett97/BePsicologia/wiki) 
-### PlayList Yotube: [Video](https://www.youtube.com/watch?v=dFPT2tewXNc&list=PL7mL_0AvB-9hX9bXe_Ym4hYEt3jw3A2qR&pp=gAQBiAQB)
+- Docker
+- Docker Compose
+
+### To run
+
+#### Clone Repository
+
+```
+$ git clone git@github.com:SI-DABE/problem-track.git
+$ cd problem-track
+```
+
+#### Define the env variables
+
+```
+$ cp .env.example .env
+```
+
+#### Install the dependencies
+
+```
+$ ./run composer install
+```
+
+#### Up the containers
+
+```
+$ docker compose up -d
+```
+
+ou
+
+```
+$ ./run up -d
+```
+
+#### Create database and tables
+
+```
+$ ./run db:reset
+```
+
+#### Populate database
+
+```
+$ ./run db:populate
+```
+
+### Fixed uploads folder permission
+
+```
+sudo chown www-data:www-data public/assets/uploads
+```
+
+#### Run the tests
+
+```
+$ docker compose run --rm php ./vendor/bin/phpunit tests --color
+```
+
+ou
+
+```
+$ ./run test
+```
+
+#### Run the linters
+
+[PHPCS](https://github.com/PHPCSStandards/PHP_CodeSniffer/)
+
+```
+$ ./run phpcs
+```
+
+[PHPStan](https://phpstan.org/)
+
+```
+$ ./run phpstan
+```
+
+Access [localhost](http://localhost)
+
+### Teste de API
+
+```shell
+curl -H "Accept: application/json" localhost/problems
+```
