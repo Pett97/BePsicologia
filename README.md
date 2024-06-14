@@ -1,8 +1,6 @@
-# ProjetoBack-End
-Projeto desenvolvido na disciplina de Desenvolvimento de Aplicações Back-End do Curso de Tecnologia em Sistemas para Internet
-# Alunos 
-Peterson Henrique de Padua
-Rafael Rodrigures Padilha
+## Problem Track
+
+"Problem Track" is the ultimate solution for organizations seeking to enhance their problem resolution processes, drive operational efficiency, and deliver exceptional customer experiences.
 
 ### Dependências
 
@@ -14,8 +12,8 @@ Rafael Rodrigures Padilha
 #### Clone Repository
 
 ```
-$ git clone https://github.com/Pett97/BePsicologia.git
-$ cd BePsicologia
+$ git clone git@github.com:SI-DABE/problem-track.git
+$ cd problem-track
 ```
 
 #### Define the env variables

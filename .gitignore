@@ -1,9 +1,0 @@
-#ignore vendor folder
-/vendor/
-
-#ignore cache folder
-.cache/*
-
-#igone log
-/log/*
-
