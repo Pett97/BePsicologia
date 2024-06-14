@@ -14,8 +14,19 @@ class User
         private string|null $name = null,
         private string|null $email = null,
         private string|null $password = null,
-        private string|null $password_confirmation = null
+        private string|null $password_confirmation = null,
+        private int   |null $city_id = null,
     ) {
+    }
+
+    public function setCityId(int $cityId): void
+    {
+        $this->city_id = $cityId;
+    }
+
+    public function getCityId(): int
+    {
+        return $this->city_id;
     }
 
     public function setId(int $id): void
@@ -53,14 +64,14 @@ class User
         if ($this->isValid()) {
             $pdo = Database::getDatabaseConn();
             if ($this->newRecord()) {
-                $sql = 'INSERT INTO users (name, email, password) VALUES (:name, :email, :password);';
+                $sql = 'INSERT INTO users (name,email,password,city_id) VALUES (:name, :email, :password,:city_id);';
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':name', $this->name);
                 $stmt->bindParam(':email', $this->email);
 
                 $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
                 $stmt->bindParam(':password', $password_hash);
-
+                $stmt->bindParam(':city_id', $this->city_id);
                 $stmt->execute();
 
                 $this->id = (int) $pdo->lastInsertId();
@@ -96,6 +107,10 @@ class User
 
         if ($this->password !== $this->password_confirmation) {
             $this->errors['password'] = 'as senhas devem ser idênticas!';
+        }
+
+        if (empty($this->city_id)) {
+            $this->errors["city_id"] = "Id da Cidade não pode ser vazio";
         }
 
         return empty($this->errors);

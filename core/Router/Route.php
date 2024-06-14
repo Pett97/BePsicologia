@@ -6,7 +6,6 @@ use Core\Http\Middleware\Middleware;
 use Core\Http\Request;
 use Core\Router\Router;
 
-
 class Route
 {
     private string $name = "";

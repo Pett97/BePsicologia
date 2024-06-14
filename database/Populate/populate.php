@@ -1,13 +1,14 @@
 <?php
 require __DIR__ . '/../../config/bootstrap.php';
+
+
+
 use Core\Database\Database;
-use Database\Populate\BrandsPopulate;
-use Database\Populate\CarsPopulate;
+use Database\Populate\ClientsPopulate;
+use Database\Populate\SupplyPopulate;
 use Database\Populate\UsersPopulate;
 
 Database::migrate();
-
-
-BrandsPopulate::populate();
-CarsPopulate::populate();
+ClientsPopulate::populate();
+SupplyPopulate::populate();
 UsersPopulate::populate();
