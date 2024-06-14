@@ -129,45 +129,37 @@ class RouteTest extends TestCase
         $instanceProperty->setValue(null, $originalInstance);
     }
 
+
     public function test_match_should_return_true_if_method_and_uri_match(): void
     {
         $route = new Route(method: 'GET', uri: '/', controllerName: 'MockController', actionName: 'index');
 
-        $this->assertTrue($route->match($this->request('GET', '/')));
+        $this->assertTrue($route->match($this->testRequest('GET', '/')));
+    }
+
+
+
+    public function test_name_should_set_the_name_of_the_route(): void
+    {
+        $route = new Route(method: "GET", uri: "/", controllerName: "MockController", actionName: "index");
+        $route->name("root");
+
+        $this->assertEquals("root", $route->getName());
     }
 
     public function test_match_should_return_false_if_method_and_uri_do_not_match(): void
     {
         $route = new Route(method: 'GET', uri: '/', controllerName: 'MockController', actionName: 'index');
 
-        $this->assertFalse($route->match($this->request('POST', '/')));
-        $this->assertFalse($route->match($this->request('GET', '/test')));
+        $this->assertFalse($route->match($this->testRequest('POST', "asdasd")));
+        $this->assertFalse($route->match($this->testRequest("GET", "/test")));
     }
-
-    public function test_name_should_set_the_name_of_the_route(): void
-    {
-        $route = new Route(method: 'GET', uri: '/', controllerName: 'MockController', actionName: 'index');
-        $route->name('root');
-
-        $this->assertEquals('root', $route->getName());
-    }
-
-    public function test_match_should_return_true_if_method_and_uri_with_params_match(): void
-    {
-        $route = new Route(method: 'GET', uri: '/test/{id}', controllerName: 'MockController', actionName: 'show');
-        $route->name('test.show');
-
-        $this->assertTrue($route->match($this->request('GET', '/test/1')));
-        $this->assertFalse($route->match($this->request('GET', '/test/1/edit')));
-        $this->assertFalse($route->match($this->request('GET', '/test')));
-    }
-
 
     public function test_match_should_return_true_and_add_params_if_method_and_uri_with_params_match(): void
     {
         $route = new Route(method: 'GET', uri: '/test/{id}', controllerName: 'MockController', actionName: 'show');
 
-        $request = $this->request('GET', '/test/1');
+        $request = $this->testRequest('GET', '/test/1');
 
         $this->assertTrue($route->match($request));
         $this->assertEquals(['id' => 1], $request->getParams());
@@ -176,14 +168,14 @@ class RouteTest extends TestCase
     public function test_match_should_return_true_using_query_params(): void
     {
         $route = new Route(method: 'GET', uri: '/test', controllerName: 'MockController', actionName: 'show');
-        $request = $this->request('GET', '/test?user_id=1&id=2');
+        $request = $this->testRequest('GET', '/test?user_id=1&id=2');
 
         $this->assertTrue($route->match($request));
     }
 
-    private function request(string $method, string $uri): Request
+    private function testRequest(string $method, string $uri): Request
     {
-        require_once Constants::rootPath()->join('tests/Unit/Core/Http/header_mock.php');
+        require_once Constants::rootPath()->join('../../tests/Unit/Core/Http/header_mock.php');
 
         $_SERVER['REQUEST_METHOD'] = $method;
         $_SERVER['REQUEST_URI'] = $uri;

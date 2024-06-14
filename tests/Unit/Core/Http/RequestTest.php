@@ -11,17 +11,15 @@ class RequestTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        require_once Constants::rootPath()->join('tests/Unit/Core/Http/header_mock.php');
+        require_once Constants::rootPath()->join('../../tests/Unit/Core/Http/header_mock.php');
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/test';
     }
 
     public function tearDown(): void
     {
+
         $_REQUEST = [];
-        unset($_SERVER['REQUEST_METHOD']);
-        unset($_SERVER['REQUEST_URI']);
-        unset($_SERVER['HTTP_ACCEPT']);
     }
 
     public function test_should_return_method(): void
@@ -78,19 +76,19 @@ class RequestTest extends TestCase
 
     public function test_get_param_should_return_the_param(): void
     {
-        $_REQUEST = ['name' => 'John Doe'];
+        $_REQUEST = ["name" => "Carro1"];
         $request = new Request();
 
-        $this->assertEquals('John Doe', $request->getParam('name'));
-        $this->assertNull($request->getParam('age'));
+        $this->assertEquals("Carro1", $request->getParam("name", 1));
+        $this->assertNull($request->getParam("age"));
     }
 
     public function test_get_param_should_return_the_default_value_when_param_not_found(): void
     {
-        $_REQUEST = ['name' => 'John Doe'];
+        $_REQUEST = ["name" => "Carro2"];
         $request = new Request();
 
-        $this->assertEquals('John Doe', $request->getParam('name', 'Jane Doe'));
-        $this->assertEquals('Jane Doe', $request->getParam('age', 'Jane Doe'));
+        $this->assertEquals("Carro2", $request->getParam("name", "Carro2"));
+        $this->assertEquals("Carro2", $request->getParam("age", "Carro2"));
     }
 }

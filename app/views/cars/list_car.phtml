@@ -1,0 +1,34 @@
+<div class="container">
+  <section>
+    <div>
+      <h4>Carros Informados</h4>
+      <a href="<?= route("new.car") ?>"><button class="btn waves-effect waves-light green " type="submit" name="action">Novo
+        </button></a>
+    </div>
+    <?php foreach ($cars as $car) : ?>
+      <ul class="collection registered cars">
+        <div class="row">
+          <li class=" collection-item"><?= $car->getName() ?>
+
+            <div class="right">
+              <form action="<?= route("car.destroy",["id"=>$car->getId()])?>" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="id_delete" value="<?= route("car.edit",["id"=>$car->getId()])?>">
+                <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
+              </form>
+            </div>
+
+            <a href="<?= route("car.edit",["id"=>$car->getId()])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+
+            <a href="<?= route("show.car",["id"=>$car->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+
+          </li>
+        </div>
+      </ul>
+    <?php endforeach ?>
+  </section>
+</div>
+
+<div class="center">
+<?php $paginator->renderPagesNavigation()?>
+</div>

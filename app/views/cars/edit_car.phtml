@@ -1,0 +1,15 @@
+<section>
+  <div class="row">
+    <form action="<?= route("car.update",["id"=>$car->getId()])?>" method="POST" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m12 l12">
+          <input type="hidden" name="_method" value="PUT">
+          <input type="text" readonly name="idCarForEdit" value="<?=$car->getID()?>">
+          <input placeholder="Novo Nome" id="newNameCar" type="text" class="validate" name="newNameCar" required>
+          <label for="newNameCar">Novo nome Carrro <?=$car->getName()?></label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
+    </form>
+  </div>
+</section>

@@ -1,6 +1,9 @@
-## Problem Track
+## Peterson Henrique de Padua
 
-"Problem Track" is the ultimate solution for organizations seeking to enhance their problem resolution processes, drive operational efficiency, and deliver exceptional customer experiences.
+## Carros
+
+"Simple List of Car in PHP
+"
 
 ### Dependências
 
@@ -12,8 +15,20 @@
 #### Clone Repository
 
 ```
-$ git clone git@github.com:SI-DABE/problem-track.git
-$ cd problem-track
+$ git clone https://github.com/Pett97/CarrosListaPHP.git
+$ cd CarrosListaPHP
+docker composer up 
+
+OR
+
+./run up
+
+```
+
+#### Need Create the folder logs/nginx with access.log and error.log
+
+```
+
 ```
 
 #### Define the env variables
@@ -22,10 +37,21 @@ $ cd problem-track
 $ cp .env.example .env
 ```
 
+#### Define the file database
+
+```
+$ touch ./database/brand.txt
+$ touch ./database/cars.txt
+$ chmod 777 ./database/cars.txt
+$ chmod 777 ./database/brand.txt
+```
+
 #### Install the dependencies
 
 ```
-$ ./run composer install
+$ docker compose run --rm composer install
+
+./run composer
 ```
 
 #### Up the containers
@@ -33,61 +59,22 @@ $ ./run composer install
 ```
 $ docker compose up -d
 ```
+or
+./run up
 
-ou
-
-```
-$ ./run up -d
-```
-
-#### Create database and tables
-
-```
-$ ./run db:reset
-```
-
-#### Populate database
-
-```
-$ ./run db:populate
-```
-
-### Fixed uploads folder permission
-
-```
-sudo chown www-data:www-data public/assets/uploads
-```
 
 #### Run the tests
 
 ```
 $ docker compose run --rm php ./vendor/bin/phpunit tests --color
+or
+./run test
 ```
 
-ou
-
+#### Linters
 ```
-$ ./run test
-```
-
-#### Run the linters
-
-[PHPCS](https://github.com/PHPCSStandards/PHP_CodeSniffer/)
-
-```
-$ ./run phpcs
+./run phpcs
+./run phpcbf
+./run phpstan
 ```
 
-[PHPStan](https://phpstan.org/)
-
-```
-$ ./run phpstan
-```
-
-Access [localhost](http://localhost)
-
-### Teste de API
-
-```shell
-curl -H "Accept: application/json" localhost/problems
-```

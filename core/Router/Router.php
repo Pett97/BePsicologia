@@ -5,14 +5,11 @@ namespace Core\Router;
 use Core\Constants\Constants;
 use Core\Exceptions\HTTPException;
 use Core\Http\Request;
+use Core\Router\Route;
 use Exception;
 
 class Router
 {
-    private static Router|null $instance = null;
-    /** @var Route[] $routes */
-    private array $routes = [];
-
     private function __construct()
     {
     }
@@ -21,14 +18,9 @@ class Router
     {
     }
 
-    public static function getInstance(): Router
-    {
-        if (self::$instance === null) {
-            self::$instance = new Router();
-        }
-
-        return self::$instance;
-    }
+    private static ?Router $instance = null;
+    /** @var Route[] $routes */
+    private array $routes = [];
 
     public function addRoute(Route $route): Route
     {
@@ -46,11 +38,22 @@ class Router
         return $this->routes[$index];
     }
 
+    public static function getInstance(): Router
+    {
+        if (self::$instance == null) {
+            self::$instance = new Router();
+        }
+
+        return self::$instance;
+    }
+
+
     /**
      * @param string $name
      * @param mixed[] $params
      * @return string
      */
+
     public function getRoutePathByName(string $name, array $params = []): string
     {
         foreach ($this->routes as $route) {
@@ -65,7 +68,6 @@ class Router
 
         throw new Exception("Route with name $name not found", 500);
     }
-
     /**
      * @param string $routePath
      * @param mixed[] $params
@@ -103,24 +105,23 @@ class Router
 
         foreach ($this->routes as $route) {
             if ($route->match($request)) {
-                $route->runMiddlewares($request);
-
-                $class = $route->getControllerName();
+                $route->runMiddleware($request);
+                $controllerName = $route->getControllerName();
                 $action = $route->getActionName();
-
-                $controller = new $class();
+                $controller = new $controllerName();
                 $controller->$action($request);
-
                 return $controller;
             }
         }
-        return throw new HTTPException('URI ' . $request->getUri() . ' not found.', 404);
+
+        throw new HTTPException("URI " . $request->getUri() . " Not Found", 404);
     }
+
 
     public static function init(): void
     {
         if (isset($_SERVER['REQUEST_METHOD'])) {
-            require Constants::rootPath()->join('config/routes.php');
+            require Constants::rootPath()->join("/../config/routes.php");
             Router::getInstance()->dispatch();
         }
     }

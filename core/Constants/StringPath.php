@@ -12,7 +12,7 @@ class StringPath
     public function join(string $path): StringPath
     {
 
-        $this->path .= '/' . ltrim($path, '/');
+        $this->path .= $path;
 
         return $this;
     }
