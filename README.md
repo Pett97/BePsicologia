@@ -1,8 +1,13 @@
+<div style="text-align: justify;">
+#[WIKI](https://github.com/Pett97/BePsicologia/wiki)
+
 ## Peterson Henrique de Padua
+## Rafael Rodrigutes Padilha
 
-## Carros
+## BePsicologia
 
-"Simple List of Car in PHP
+"
+BePsicologia - Sistema para gerenciamento de consultas 
 "
 
 ### Dependências
@@ -15,13 +20,9 @@
 #### Clone Repository
 
 ```
-$ git clone https://github.com/Pett97/CarrosListaPHP.git
-$ cd CarrosListaPHP
+$ git clone https://github.com/Pett97/BePsicologia.git
+$ cd BePsicologia
 docker composer up 
-
-OR
-
-./run up
 
 ```
 
@@ -37,20 +38,12 @@ OR
 $ cp .env.example .env
 ```
 
-#### Define the file database
-
-```
-$ touch ./database/brand.txt
-$ touch ./database/cars.txt
-$ chmod 777 ./database/cars.txt
-$ chmod 777 ./database/brand.txt
-```
 
 #### Install the dependencies
 
 ```
 $ docker compose run --rm composer install
-
+OR
 ./run composer
 ```
 
@@ -68,6 +61,7 @@ or
 ```
 $ docker compose run --rm php ./vendor/bin/phpunit tests --color
 or
+
 ./run test
 ```
 
@@ -76,5 +70,11 @@ or
 ./run phpcs
 ./run phpcbf
 ./run phpstan
+```
+### Database
+```
+./run db:reset
+./run db:populate
+
 ```
 
