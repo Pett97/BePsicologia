@@ -38,7 +38,8 @@ class Appointment
     {
         if ($this->isValid()) {
             $pdo = Database::getDatabaseConn();
-            $sql = 'INSERT INTO appointments (psychologist_id, date, start_time, end_time, client_id) VALUES (:user, :date, :startHour, :end_time, :client_id)';
+            $sql = 'INSERT INTO appointments (psychologist_id, date, start_time, end_time, client_id) 
+            VALUES (:user, :date, :startHour, :end_time, :client_id)';
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':user', $this->getUserID());
             $stmt->bindValue(':date', $this->date->format('Y-m-d'), \PDO::PARAM_STR);
