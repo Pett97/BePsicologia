@@ -89,7 +89,7 @@ class State
         return empty($this->errors);
     }
     /**
-     * @return array<int, Brand>
+     * @return array<int, State>
      */
     public static function all(): array
     {
@@ -97,7 +97,7 @@ class State
         $pdo = Database::getDatabaseConn();
         $resp = $pdo->query("SELECT name,id FROM states");
         foreach ($resp as $row) {
-            $brands[] = new State(name: $row["name"], id: $row["id"]);
+            $states[] = new State(name: $row["name"], id: $row["id"]);
         }
         return $states;
     }

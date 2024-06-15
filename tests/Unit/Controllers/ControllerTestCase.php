@@ -19,7 +19,7 @@ abstract class ControllerTestCase extends TestCase
         $_SERVER['REQUEST_URI'] = '/';
         $this->request = new Request();
     }
-
+    
     public function tearDown(): void
     {
         unset($_SERVER['REQUEST_METHOD']);

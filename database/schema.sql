@@ -46,7 +46,7 @@ CREATE TABLE clients (
 );
 
 DROP TABLE IF EXISTS appointments;
-
+/* agendamentos */
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     psychologist_id INTEGER NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE appointments (
 );
 
 DROP TABLE IF EXISTS fixed_schedules;
-
+/* horarios fixo  */
 CREATE TABLE fixed_schedules (
     id INT AUTO_INCREMENT PRIMARY KEY,
     psychologist_id INT NOT NULL,

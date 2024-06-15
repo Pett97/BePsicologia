@@ -8,17 +8,16 @@ use Lib\Paginator;
 
 class Client
 {
-    //cons dbPath  = '/var/www/database/brand.txt';
-
     private string $name = "";
     private string $phone = "";
-    private int    $insurance_id = 0;
+    private int $insurance_id = 0;
     private string $streetName = "";
-    private int    $numberHouse = 0;
-    private int    $city_id = 0;
+    private int $numberHouse = 0;
+    private int $city_id = 0;
+    private int $id = -1;
 
     /**
-     * @var array<string, string>
+     * @var array<string>
      */
     private array $errors = [];
 
@@ -29,7 +28,7 @@ class Client
         int $numberHouse = 0,
         string $streetName = "",
         int $city_id = 0,
-        private int $id = -1
+        int $id = -1
     ) {
         $this->name = trim(strtoupper($name));
         $this->phone = trim($phone);
@@ -37,6 +36,7 @@ class Client
         $this->numberHouse = $numberHouse;
         $this->streetName = $streetName;
         $this->city_id = $city_id;
+        $this->id = $id;
     }
 
     public function setPhone(string $phone): void
@@ -59,7 +59,7 @@ class Client
         return $this->insurance_id;
     }
 
-    public  function setStreetName(string $streetName): void
+    public function setStreetName(string $streetName): void
     {
         $this->streetName = $streetName;
     }
@@ -109,23 +109,31 @@ class Client
         return $this->name;
     }
 
-    private function addErro(string $text): void
+    private function addError(string $text): void
     {
         $this->errors[] = $text;
     }
 
     public function hasErrors(): bool
     {
-        return empty($this->errors);
+        return !empty($this->errors);
     }
 
     public function save(): bool
     {
         if ($this->isValid()) {
-            $pdo = Database::getDatabaseConn();
-            if ($this->newRecord()) {
-                $sql = "INSERT INTO clients (name, phone, insurance_id, street_name,number,city_id) VALUES (:name,:phone, :insurance_id, :street_name,:number,:city_id)";
-                $stmt = $pdo->prepare($sql);
+            try {
+                $pdo = Database::getDatabaseConn();
+                if ($this->newRecord()) {
+                    $sql = "INSERT INTO clients (name, phone, insurance_id, street_name, number, city_id) 
+                    VALUES (:name, :phone, :insurance_id, :street_name, :number, :city_id)";
+                    $stmt = $pdo->prepare($sql);
+                } else {
+                    $sql = "UPDATE clients SET name = :name, phone = :phone, insurance_id = :insurance_id, 
+                            street_name = :street_name, number = :number, city_id = :city_id WHERE id = :id";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(":id", $this->id);
+                }
                 $stmt->bindParam(":name", $this->name);
                 $stmt->bindParam(":phone", $this->phone);
                 $stmt->bindParam(":insurance_id", $this->insurance_id);
@@ -134,14 +142,10 @@ class Client
                 $stmt->bindParam(":city_id", $this->city_id);
 
                 $stmt->execute();
-            } else {
-                $sql = "UPDATE clients set name = :name WHERE id = :id";
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(":name", $this->name);
-                $stmt->bindParam(":id", $this->id);
-                $stmt->execute();
+                return true;
+            } catch (\PDOException $e) {
+                $this->addError("Database error: " . $e->getMessage());
             }
-            return true;
         }
         return false;
     }
@@ -153,34 +157,30 @@ class Client
 
     private function isValid(): bool
     {
-
         $this->errors = [];
 
-        if (empty($this->getName())) {
-            $this->addErro("Nome Cliente Não Pode ser Vazio");
+        if (empty($this->name)) {
+            $this->addError("Nome Cliente Não Pode ser Vazio");
         }
-        if (empty($this->getPhone())) {
-            $this->addErro("Phone Cliente Não Pode ser Vazio");
+        if (empty($this->phone)) {
+            $this->addError("Phone Cliente Não Pode ser Vazio");
         }
-
-        if (empty($this->getInsuranceID())) {
-            $this->addErro("Convenio Cliente Não Pode ser Vazio, informe ZERO caso não tenha ");
+        if ($this->insurance_id < 0) {
+            $this->addError("Convenio Cliente Não Pode ser Negativo, informe ZERO caso não tenha");
         }
-
-        if (empty($this->getStreetName())) {
-            $this->addErro("Endereço Cliente Não Pode ser Vazio, informe ZERO caso não tenha ");
+        if (empty($this->streetName)) {
+            $this->addError("Endereço Cliente Não Pode ser Vazio, informe ZERO caso não tenha");
         }
-
-        if (empty($this->getNumberHouse())) {
-            $this->addErro(" numero casa Cliente Não Pode ser Vazio, informe ZERO caso não tenha ");
+        if ($this->numberHouse < 0) {
+            $this->addError("Numero Casa Cliente Não Pode ser Negativo, informe ZERO caso não tenha");
         }
-
-        if (empty($this->getCityId())) {
-            $this->addErro("Cidade Cliente Não Pode ser Vazio, informe ZERO caso não tenha ");
+        if ($this->city_id < 0) {
+            $this->addError("Cidade Cliente Não Pode ser Negativa, informe ZERO caso não tenha");
         }
 
-        return empty($this->errors);
+        return !$this->hasErrors();
     }
+
     /**
      * @return array<int, Client>
      */
@@ -188,24 +188,22 @@ class Client
     {
         $clients = [];
         $pdo = Database::getDatabaseConn();
-        $resp = $pdo->query("SELECT name,id FROM clients");
+        $resp = $pdo->query("SELECT name, id FROM clients");
         foreach ($resp as $row) {
             $clients[] = new Client(name: $row["name"], id: $row["id"]);
         }
         return $clients;
     }
 
-
-    public static function findByID(int $id): Client|null
+    public static function findByID(int $id): ?Client
     {
         $pdo = Database::getDatabaseConn();
-        $sql = "SELECT id,name FROM brands WHERE id = :id";
+        $sql = "SELECT id, name FROM clients WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":id", $id);
-
         $stmt->execute();
 
-        if ($stmt->rowCount() == 0) {
+        if ($stmt->rowCount() === 0) {
             return null;
         }
 
@@ -216,13 +214,18 @@ class Client
 
     public function destroy(): bool
     {
-        $pdo = Database::getDatabaseConn();
-        $sql = "DELETE FROM clients WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(":id", $this->id);
-        $stmt->execute();
+        try {
+            $pdo = Database::getDatabaseConn();
+            $sql = "DELETE FROM clients WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":id", $this->id);
+            $stmt->execute();
 
-        return ($stmt->rowCount() !== 0);
+            return ($stmt->rowCount() !== 0);
+        } catch (\PDOException $e) {
+            $this->addError("Database error: " . $e->getMessage());
+            return false;
+        }
     }
 
     public static function paginate(int $page, int $per_page): Paginator

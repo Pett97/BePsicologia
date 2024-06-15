@@ -11,7 +11,7 @@ class SupplyPopulate
     public static function populate(): void
     {
         $SupllyPopulate = 7;
-        for ($i = 0; $i < $SupllyPopulate; $i++) {
+        for ($i = 1; $i < $SupllyPopulate; $i++) {
             $state = new State(name: "Estado" . $i);
             $state->save();
             $city = new City(idState: $i, name: "Cidade" . $i);
