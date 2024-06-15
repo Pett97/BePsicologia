@@ -8,10 +8,9 @@ class EnvLoader
 {
     public static function init(): void
     {
-        $envs = parse_ini_file(Constants::rootPath()->join('.env'));
-
-        foreach ($envs as $key => $value) {
-            $_ENV[$key] = $value;
+        $envs = parse_ini_file(Constants::rootPath()->join('../../.env'));
+        foreach ($envs as $env => $value) {
+            $_ENV[$env] = $value;
         }
     }
 }

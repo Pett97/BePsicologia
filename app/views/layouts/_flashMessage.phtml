@@ -1,0 +1,9 @@
+<?php foreach (\Lib\FlashMessage::get() as $type => $msg) : ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                M.toast({
+                    html: '<?php echo $msg; ?>'
+                });
+            });
+        </script>
+<?php endforeach ?>

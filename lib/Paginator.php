@@ -5,7 +5,6 @@ namespace Lib;
 use Core\Constants\Constants;
 use Core\Database\Database;
 use PDO;
-use PDOStatement;
 
 class Paginator
 {
@@ -15,32 +14,16 @@ class Paginator
     private int $offset = 0;
     private array $registers = [];
 
+
     public function __construct(
         private string $class,
         private int $page,
         private int $per_page,
         private string $table,
-        private array $attributes,
-        private array $conditions = [],
-        private ?string $route = null
+        private array $attributes
     ) {
         $this->loadTotals();
         $this->loadRegisters();
-    }
-
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    public function perPage(): int
-    {
-        return $this->per_page;
-    }
-
-    public function totalOfRegistersOfPage(): int
-    {
-        return $this->totalOfRegistersOfPage;
     }
 
     public function totalOfRegisters(): int
@@ -70,7 +53,16 @@ class Paginator
 
     public function hasNextPage(): bool
     {
-        return $this->nextPage() <= $this->totalOfPages();
+        return $this->nextPage() >= $this->totalOfPages();
+    }
+
+    private function loadTotals(): void
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "SELECT COUNT(*) FROM ($this->table)";
+
+        $this->totalOfRegisters = $pdo->query($sql)->fetchColumn();
+        $this->totalOfPages = ceil($this->totalOfRegisters / $this->per_page);
     }
 
     public function isPage(int $page): bool
@@ -78,40 +70,16 @@ class Paginator
         return $this->page === $page;
     }
 
-    public function entriesInfo(): string
-    {
-        $totalVisualizedBegin = $this->offset + 1;
-        $totalVisualizedEnd = $totalVisualizedBegin + $this->totalOfRegistersOfPage - 1;
-        return "Mostrando {$totalVisualizedBegin} - {$totalVisualizedEnd} de {$this->totalOfRegisters}";
-    }
-
     public function registers(): array
     {
         return $this->registers;
     }
 
-    public function renderPagesNavigation()
+    public function entriesInfo(): string
     {
-        $paginator = $this;
-        require Constants::rootPath()->join('app/views/paginator/_pages.phtml');
-    }
-
-    public function getRouteName(): string
-    {
-        return $this->route ?? "$this->table.paginate";
-    }
-
-    private function loadTotals(): void
-    {
-        $pdo = Database::getDatabaseConn();
-        $sql = "SELECT COUNT(*) FROM {$this->table}" . $this->buildConditions();
-
-        $stmt = $pdo->prepare($sql);
-        $this->bindConditions($stmt);
-        $stmt->execute();
-
-        $this->totalOfRegisters = $stmt->fetchColumn();
-        $this->totalOfPages = ceil($this->totalOfRegisters / $this->per_page);
+        $totalVisualizedBegin = $this->offset + 1;
+        $totalVisualizedEnd = $totalVisualizedBegin + $this->totalOfRegistersOfPage - 1;
+        return "Mostrando {$totalVisualizedBegin} - {$totalVisualizedEnd} de {$this->totalOfRegisters}";
     }
 
     private function loadRegisters(): void
@@ -123,7 +91,6 @@ class Paginator
 
         $sql = <<<SQL
             SELECT id, {$attributes} FROM {$this->table}
-            {$this->buildConditions()}
             LIMIT :limit OFFSET :offset
         SQL;
 
@@ -133,38 +100,23 @@ class Paginator
         $stmt->bindValue('limit', $this->per_page, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $this->offset, PDO::PARAM_INT);
 
-        $this->bindConditions($stmt);
-
         $stmt->execute();
-        $resp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resp = $stmt->fetchAll(PDO::FETCH_NUM);
         $this->totalOfRegistersOfPage = $stmt->rowCount();
 
         foreach ($resp as $row) {
-            $this->registers[] = new $this->class($row);
+            $this->registers[] = new $this->class(...$row);
         }
     }
 
-    private function buildConditions(): string
+    public function renderPagesNavigation()
     {
-        if (empty($this->conditions)) {
-            return '';
-        }
-
-        $sqlConditions = array_map(function ($column) {
-            return "{$column} = :{$column}";
-        }, array_keys($this->conditions));
-
-        return ' WHERE ' . implode(' AND ', $sqlConditions);
+        $paginator = $this;
+        require Constants::rootPath()->join("../../app/views/paginator/_pages.phtml");
     }
 
-    private function bindConditions(PDOStatement $stmt): void
+    public function getRouteName(): string
     {
-        if (empty($this->conditions)) {
-            return;
-        }
-
-        foreach ($this->conditions as $column => $value) {
-            $stmt->bindValue($column, $value);
-        }
+        return "$this->table.paginate";
     }
 }

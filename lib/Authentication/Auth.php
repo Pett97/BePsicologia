@@ -8,7 +8,7 @@ class Auth
 {
     public static function login($user): void
     {
-        $_SESSION['user']['id'] = $user->id;
+        $_SESSION['user']['id'] = $user->getId();
     }
 
     public static function user(): ?User

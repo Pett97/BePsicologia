@@ -1,0 +1,27 @@
+<section>
+  <div>
+    <h4>Marcas Informadas</h4>
+    <a href="<?= route("new.brand") ?>"><button class="btn waves-effect waves-light green " type="submit" name="action">Nova
+      </button></a>
+  </div>
+  <?php foreach ($brands as $brand) : ?>
+    <ul class="collection registered brands">
+      <li class="collection-item"> <?= $brand->getName() ?>
+        <div class="right">
+          <form action="<?= route("brand.destroy",["id"=>$brand->getId()])?>" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="id_delete" value="<?= route("brand.destroy",["id"=>$brand->getId()])?>">
+            <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
+          </form>
+        </div>
+
+        <a href="<?= route("brand.edit",["id"=>$brand->getId()])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+
+        <a href="<?= route("brands.show",["id"=>$brand->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+      </li>
+    </ul>
+  <?php endforeach ?>
+</section>
+<div class="center">
+  <?php $paginator->renderPagesNavigation() ?>
+</div>
