@@ -1,0 +1,27 @@
+<section>
+  <div>
+    <h4>Clientes Cadastrados</h4>
+    <a href="<?= route("new.client") ?>"><button class="btn waves-effect waves-light green " type="submit" name="action">Novo
+      </button></a>
+  </div>
+  <?php foreach ($clients as $client) : ?>
+    <ul class="collection registered clients">
+      <li class="collection-item"> <?= $client->getName() ?>
+        <div class="right">
+          <form action="<?= route("client.destroy",["id"=>$client->getId()])?>" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="id_delete" value="<?= route("client.destroy",["id"=>$client->getId()])?>">
+            <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
+          </form>
+        </div>
+
+        <a href="<?= route("client.edit",["id"=>$client->getId()])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+
+        <a href="<?= route("clients.show",["id"=>$client->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+      </li>
+    </ul>
+  <?php endforeach ?>
+</section>
+<div class="center">
+  <?php $paginator->renderPagesNavigation() ?>
+</div>

@@ -23,20 +23,20 @@ class ClientsController
     }
 
 
-   // public function authenticated(): void
-   // {
-   //     if(!Auth::check()){
-   //         FlashMessage::danger("erro");
-   //         $this->redirectTo("/login");
-   //     }
-   // }
+    // public function authenticated(): void
+    // {
+    //     if(!Auth::check()){
+    //         FlashMessage::danger("erro");
+    //         $this->redirectTo("/login");
+    //     }
+    // }
 
     public function index(Request $request): void
     {
         $page = $request->getParam('page', 1);
         $itemsPerPage = $request->getParam('items_per_page', 10);
         $paginator = Client::paginate($page, $itemsPerPage);
-        $brands = $paginator->registers();
+        $clients = $paginator->registers();
         $title = "Lista De Clientes";
 
         if ($request->acceptJson()) {
@@ -96,7 +96,7 @@ class ClientsController
 
         $client = Client::findByID($params["id"]);
 
-        $newNameClient = $params["newBrandClient"];
+        $newNameClient = $params["newClient"];
         $client->setName($newNameClient);
         $client->save();
         FlashMessage::success("Cliente Atualizado Com Sucesso");
