@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Models\Brand;
+use App\Models\Client;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use App\Models\User;
 use Lib\Authentication\Auth;
 
-class BrandsController
+class ClientsController
 {
     private string $layout = "application";
     private ?User $currentUser = null;
@@ -35,83 +35,83 @@ class BrandsController
     {
         $page = $request->getParam('page', 1);
         $itemsPerPage = $request->getParam('items_per_page', 10);
-        $paginator = Brand::paginate($page, $itemsPerPage);
+        $paginator = Client::paginate($page, $itemsPerPage);
         $brands = $paginator->registers();
-        $title = "Lista De Carros";
+        $title = "Lista De Clientes";
 
         if ($request->acceptJson()) {
-            $this->renderJson('index', compact("paginator", 'brands', 'title'));
+            $this->renderJson('index', compact("paginator", 'clients', 'title'));
         } else {
-            $this->render('list_brand', compact("paginator", 'brands', 'title'));
+            $this->render('list_clients', compact("paginator", 'clients', 'title'));
         }
     }
 
     public function new(): void
     {
-        $title = "Nova Marca";
-        $brand = new Brand();
-        $this->render("new_brand", compact("brand", "title"));
-        $view = "/var/www/app/views/brands/.phtml";
+        $title = "Novo Cliente";
+        $client = new Client();
+        $this->render("new_client", compact("client", "title"));
+        $view = "/var/www/app/views/clients/.phtml";
     }
 
     public function create(Request $request): void
     {
         $params = $request->getParams();
-        $brand = new Brand(name: $params["brand_name"]);
+        $client = new Client(name: $params["client_name"]);
 
-        if ($brand->save()) {
-            FlashMessage::success("Marca Criada Com Sucesso");
-            $this->redirectTo(route("brands.list"));
+        if ($client->save()) {
+            FlashMessage::success("Cliente Salvo Com Sucesso");
+            $this->redirectTo(route("clients.list"));
         } else {
-            $title = "Nova Marca";
-            $this->render("list_brand", compact("brand", "title"));
+            $title = "Nono Client";
+            $this->render("list_client", compact("client", "title"));
         }
     }
 
     public function show(Request $request): void
     {
         $params = $request->getParams();
-        $brand = Brand::findByID($params["id"]);
+        $client = Client::findByID($params["id"]);
 
-        if ($brand !== null) {
-            $title = $brand->getName();
-            $this->render("detail_brand", compact("brand", "title"));
+        if ($client !== null) {
+            $title = $client->getName();
+            $this->render("detail_client", compact("client", "title"));
         } else {
-            $this->redirectTo(route("brands.list"));
+            $this->redirectTo(route("client.list"));
         }
     }
 
     public function edit(Request $request): void
     {
         $params = $request->getParams();
-        $brand = Brand::findByID($params["id"]);
+        $client = Client::findByID($params["id"]);
 
-        $title = "Editar {$brand->getName()}";
-        $this->render("edit_brand", compact("brand", "title"));
+        $title = "Editar {$client->getName()}";
+        $this->render("edit_client", compact("client", "title"));
     }
 
     public function update(Request $request): void
     {
         $params = $request->getParams();
 
-        $brand = Brand::findByID($params["id"]);
+        $client = Client::findByID($params["id"]);
 
-        $newNameBrand = $params["newBrandName"];
-        $brand->setName($newNameBrand);
-        $brand->save();
-        FlashMessage::success("Marca Atualizada Com Sucesso");
-        $this->redirectTo(route("brands.list"));
+        $newNameClient = $params["newBrandClient"];
+        $client->setName($newNameClient);
+        $client->save();
+        FlashMessage::success("Cliente Atualizado Com Sucesso");
+        $this->redirectTo(route("client.list"));
 
-        $title = "Editar Marca ";
-        $this->render("edit_brand", compact("brand", "title"));
+        $title = "Editar Client ";
+        $this->render("edit_client", compact("client", "title"));
     }
 
     public function delete(Request $request): void
     {
         $params = $request->getParams();
-        $brand = Brand::findByID($params["id"]);
-        $brand->destroy();
-        FlashMessage::success("Marca Removida Com Sucesso");
+        $client = Client::findByID($params["id"]);
+        $client->destroy();
+        FlashMessage::success("Client Removidp Com Sucesso");
         $this->redirectTo(route("brands.list"));
     }
 
@@ -137,9 +137,9 @@ class BrandsController
     private function renderJSON(string $view, array $data = []): void
     {
         extract($data);
-        $view = "/var/www/app/views/brands/" . $view . "json.php";
+        $view = "/var/www/app/views/client/" . $view . "json.php";
         $json = [];
-        include "/var/www/app/views/brands/brands.json.php";
+        include "/var/www/app/views/client/client.json.php";
         header("Content-Type: application/json; charset=utf-8");
         echo json_encode($json);
         return;

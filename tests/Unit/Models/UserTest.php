@@ -13,10 +13,11 @@ class UserTest extends TestCase
     {
         parent::setUp();
         $this->user = new User(
-            name: 'User 1',
-            email: 'fulano@example.com',
-            password: '123456',
-            password_confirmation: '123456'
+            name: 'UserSetUp',
+            email: 'admin@example.com',
+            password: 'admin123',
+            password_confirmation: 'admin123',
+            city_id: 1
         );
         $this->user->save();
     }
@@ -29,10 +30,11 @@ class UserTest extends TestCase
     public function test_all_should_return_all_users(): void
     {
         $user = new User(
-            name: 'User 2',
-            email: 'fulano1@example.com',
-            password: '123456',
-            password_confirmation: '123456'
+            name: 'UserSetUp2',
+            email: 'admin2@example.com',
+            password: 'admin123',
+            password_confirmation: 'admin123',
+            city_id: 1
         );
         $user->save();
 
@@ -48,10 +50,11 @@ class UserTest extends TestCase
     public function test_destroy_should_remove_the_user(): void
     {
         $user = new User(
-            name: 'User 2',
-            email: 'fulano1@example.com',
-            password: '123456',
-            password_confirmation: '123456'
+            name: 'UserSetUp3',
+            email: 'admin3@example.com',
+            password: 'admin123',
+            password_confirmation: 'admin123',
+            city_id: 1
         );
         $user->save();
 
@@ -94,10 +97,11 @@ class UserTest extends TestCase
     public function test_errors_should_return_password_confirmation_error(): void
     {
         $user = new User(
-            name: 'User 2',
-            email: 'fulano2@example.com',
-            password: '123456',
-            password_confirmation: '1234567'
+            name: 'UserSetUp5',
+            email: 'admin5@example.com',
+            password: 'admin123',
+            password_confirmation: 'admin4123',
+            city_id: 1
         );
 
         $this->assertFalse($user->isValid());
@@ -110,10 +114,11 @@ class UserTest extends TestCase
     {
         for ($i = 0; $i < 2; $i++) {
             (new User(
-                name: 'User ' . $i,
-                email: 'fulano' . $i . '@example.com',
-                password: '123456',
-                password_confirmation: '123456'
+                name: 'UserSetUp' . $i,
+                email: 'admin' . $i . 'example.com',
+                password: 'admin123',
+                password_confirmation: 'admin123',
+                city_id: 1
             ))->save();
         }
 
@@ -146,7 +151,7 @@ class UserTest extends TestCase
 
     public function test_authenticate_should_return_the_true(): void
     {
-        $this->assertTrue($this->user->authenticate('123456'));
+        $this->assertTrue($this->user->authenticate('admin123'));
         $this->assertFalse($this->user->authenticate('wrong'));
     }
 }
