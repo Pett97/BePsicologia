@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Client;
-use App\Models\User;
 use Core\Database\Database;
 use DateInterval;
 use DateTime;
@@ -57,10 +55,6 @@ class Appointment
     {
         $this->errors = [];
 
-        if (empty($this->userID)) {
-            $this->errors['user'] = 'Precisa informar o ID do Psicólogo';
-        }
-
         if (empty($this->date)) {
             $this->errors['date'] = 'Precisa informar a Data';
         }
@@ -74,9 +68,10 @@ class Appointment
         return empty($this->errors);
     }
 
+
     public function hasErrors(): bool
     {
-        return !empty($this->errors);
+        return empty($this->errors);
     }
 
     public function errors(string $index): ?string

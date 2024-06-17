@@ -47,7 +47,7 @@ class State
 
     public function hasErrors(): bool
     {
-        return empty($this->errors);
+        return !empty($this->errors);
     }
 
     public function save(): bool

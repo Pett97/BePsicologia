@@ -159,7 +159,7 @@ class Client
     {
         $this->errors = [];
 
-        if ($this->name === "" || empty($this->name)){
+        if ($this->name === "" || empty($this->name)) {
             $this->addError("Nome Cliente Não Pode ser Vazio");
         }
         if (empty($this->phone)) {

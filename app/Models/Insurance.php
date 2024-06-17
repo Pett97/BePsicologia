@@ -47,7 +47,7 @@ class Insurance
 
     public function hasErrors(): bool
     {
-        return empty($this->errors);
+        return !empty($this->errors);
     }
 
     public function save(): bool
@@ -82,8 +82,8 @@ class Insurance
 
         $this->errors = [];
 
-        if (empty($this->getName())) {
-            $this->addErro("Nome Convenio Não Pode ser Vazio");
+        if ($this->name === "" || empty($this->name)) {
+            $this->addErro("Nome Cliente Não Pode ser Vazio");
         }
 
         return empty($this->errors);

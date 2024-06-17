@@ -122,9 +122,9 @@ class User
     }
 
     public function hasErrors(): bool
-{
-    return empty($this->errors);
-}
+    {
+        return empty($this->errors);
+    }
 
     public function errors(string $index): string | null
     {
