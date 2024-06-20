@@ -1,0 +1,27 @@
+<div class="center-align">
+  <div class="row ">
+    <div class="col l12 m12 s12">
+      <div class="card blue darken-4">
+        <div class="card-content white-text">
+          <div class="row">
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Nome: ".$fixedSchedule->getID() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Dia Semana: ".$fixedSchedule->getDayOFWeek() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Inicio: ".$fixedSchedule->getStartTime()->format('H:i:s') ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Fim: ".$fixedSchedule->getEndTime()->format('H:i:s')?></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-action right-align">
+          <a href="/schedules">Voltar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

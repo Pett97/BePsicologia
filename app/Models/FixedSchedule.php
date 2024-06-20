@@ -12,22 +12,27 @@ class FixedSchedule
      * @var array<string, string>
      */
     private array $errors = [];
-    private int $userID;
-    private int $dayOFWeek;
-    private DateTime $startTime;
-    private DateTime $endTime;
 
     public function __construct(
-        int $userID,
-        int $dayOFWeek,
-        DateTime $startTime,
-        DateTime $endTime,
+        private int $id = -1,
+        private int $userID =0,
+        private int $dayOFWeek=0,
+        private DateTime $startTime= new \DateTime("2024-06-15 17:00:00"),
+        private DateTime $endTime = new \DateTime("2024-06-15 17:00:00")
     ) {
-        $this->userID = $userID;
-        $this->dayOFWeek = $dayOFWeek;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
+
     }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getID(): int
+    {
+        return $this->id;
+    }
+
 
     public function isValid(): bool
     {
@@ -65,10 +70,10 @@ class FixedSchedule
             $sql = 'INSERT INTO fixed_schedules (psychologist_id, day_of_week, start_time, end_time) 
             VALUES (:user, :day_of_week, :start_time, :end_time)';
             $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':user', $this->getUserID(), \PDO::PARAM_INT);
-            $stmt->bindValue(':day_of_week', $this->getDayOFWeek(), \PDO::PARAM_INT);
-            $stmt->bindValue(':start_time', $this->getStartTime()->format('H:i:s'), \PDO::PARAM_STR);
-            $stmt->bindValue(':end_time', $this->getEndTime()->format('H:i:s'), \PDO::PARAM_STR);
+            $stmt->bindValue(':user', $this->getUserID());
+            $stmt->bindValue(':day_of_week', $this->getDayOFWeek());
+            $stmt->bindValue(':start_time', $this->getStartTime()->format('H:i:s'));
+            $stmt->bindValue(':end_time', $this->getEndTime()->format('H:i:s'));
             $stmt->execute();
             return true;
         }
@@ -115,6 +120,46 @@ class FixedSchedule
         $this->endTime = $value;
     }
 
+    public static function findByID(int $id): ?FixedSchedule
+    {
+        $pdo = Database::getDatabaseConn();
+        $sql = "SELECT id, psychologist_id, day_of_week, start_time, end_time FROM fixed_schedules WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+
+        if ($stmt->rowCount() === 0) {
+            return null;
+        }
+
+        $row = $stmt->fetch();
+        
+
+        return new FixedSchedule(
+            id: $row["id"],
+            userID: $row["psychologist_id"],
+            dayOFWeek: $row["day_of_week"],
+            startTime: new \DateTime($row["start_time"]),
+            endTime: new \DateTime($row["end_time"])
+        );
+    }
+
+    public function destroy(): bool
+    {
+        try {
+            $pdo = Database::getDatabaseConn();
+            $sql = "DELETE FROM fixed_schedules WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":id", $this->id);
+            $stmt->execute();
+
+            return ($stmt->rowCount() !== 0);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+
     public static function paginate(int $page, int $per_page): Paginator
     {
         return new Paginator(
@@ -122,7 +167,7 @@ class FixedSchedule
             page: $page,
             per_page: $per_page,
             table: 'fixed_schedules',
-            attributes: ["name"]
+            attributes: ["id"]
         );
     }
 }
