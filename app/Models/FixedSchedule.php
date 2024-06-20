@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Core\Database\Database;
 use DateTime;
+use Lib\Paginator;
 
 class FixedSchedule
 {
@@ -112,5 +113,16 @@ class FixedSchedule
     public function setEndTime(DateTime $value): void
     {
         $this->endTime = $value;
+    }
+
+    public static function paginate(int $page, int $per_page): Paginator
+    {
+        return new Paginator(
+            class: FixedSchedule::class,
+            page: $page,
+            per_page: $per_page,
+            table: 'fixed_schedules',
+            attributes: ["name"]
+        );
     }
 }

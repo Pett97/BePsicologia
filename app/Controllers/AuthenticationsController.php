@@ -26,7 +26,7 @@ class AuthenticationsController
             Auth::login($user);
             FlashMessage::success('Login realizado com sucesso!');
             $_SESSION["user"]["id"] = $user->getId();
-            $this->redirectTo(route('brands.list'));
+            $this->redirectTo(route('clients.list'));
         } else {
             FlashMessage::danger('Email e/ou senha inválidos!');
             $this->redirectTo(route('users.login'));

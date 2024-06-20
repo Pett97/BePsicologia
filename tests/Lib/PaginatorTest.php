@@ -2,36 +2,46 @@
 
 namespace Tests\Unit\Lib;
 
+use App\Models\City;
 use Tests\TestCase;
 use Lib\Paginator;
-use App\Models\Brand;
-use App\Models\Car;
+use App\Models\Client;
+use App\Models\Insurance;
+use App\Models\State;
 
 class PaginatorTest extends TestCase
 {
     private Paginator $paginator;
-    /** @var mixed[] $cars */
-    private array $cars;
-    /** @var mixed[] $brands */
-    private array $brands;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        $state = new State(name: "Springfield");
+        $state->save();
+
+        $city = new City(name: "South Park", idState: $state->getID());
+        $city->save();
+
+        $insurance = new Insurance(name: "Test");
+        $insurance->save();
+
         for ($i = 0; $i < 10; $i++) {
-            $car = new Car(name: "CarTest" . $i);
-            $car->save();
-            $this->cars[] = $car;
+            $client = new Client(
+                name: 'ClientTeste' . $i,
+                phone: '42988853477',
+                insurance_id: 1,
+                streetName: 'Rua teste',
+                numberHouse: 123,
+                city_id: 1
+            );
+            $client->save();
         }
-        for ($i = 0; $i < 10; $i++) {
-            $brand = new Brand(name: "BrandTest" . $i);
-            $brand->save();
-            $this->brands[] = $brand;
-        }
-        $this->paginator = new Paginator(Car::class, 1, 10, 'cars', ['name']);
+
+        $this->paginator = new Paginator(Client::class, 1, 10, 'clients', ['name']);
     }
 
-    public function test_total_of_registers_of_cars(): void
+    public function test_total_of_registers_of_clients(): void
     {
         $this->assertEquals(10, $this->paginator->totalOfRegisters());
     }
@@ -43,9 +53,17 @@ class PaginatorTest extends TestCase
 
     public function test_total_of_pages_when_the_division_is_not_exact(): void
     {
-        $car = new Car(name: "CarTest11");
-        $car->save();
-        $this->paginator = new Paginator(Car::class, 1, 5, 'cars', ['name']);
+        $client = new Client(
+            name: 'ClientTeste',
+            phone: '42988853477',
+            insurance_id: 1,
+            streetName: 'Rua teste',
+            numberHouse: 123,
+            city_id: 1
+        );
+        $client->save();
+
+        $this->paginator = new Paginator(Client::class, 1, 5, 'clients', ['name']);
 
         $this->assertEquals(3, $this->paginator->totalOfPages());
     }
@@ -64,7 +82,7 @@ class PaginatorTest extends TestCase
     {
         $this->assertFalse($this->paginator->hasPreviousPage());
 
-        $paginator = new Paginator(Car::class, 2, 5, 'cars', ['name']);
+        $paginator = new Paginator(Client::class, 2, 5, 'clients', ['name']);
         $this->assertTrue($paginator->hasPreviousPage());
     }
 
@@ -72,7 +90,7 @@ class PaginatorTest extends TestCase
     {
         $this->assertTrue($this->paginator->hasNextPage());
 
-        $paginator = new Paginator(Car::class, 2, 5, 'cars', ['name']);
+        $paginator = new Paginator(Client::class, 2, 5, 'clients', ['name']);
         $this->assertTrue($paginator->hasNextPage());
     }
 
@@ -91,11 +109,5 @@ class PaginatorTest extends TestCase
     public function test_register_return_all(): void
     {
         $this->assertCount(10, $this->paginator->registers());
-
-        $paginator = new Paginator(Car::class, 1, 10, 'cars', ['name']);
-        $this->assertEquals(sizeof($this->cars), 10);
-
-        $paginator = new Paginator(Brand::class, 1, 10, 'brands', ['name']);
-        $this->assertEquals(sizeof($this->brands), 10);
     }
 }

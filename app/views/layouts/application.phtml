@@ -15,14 +15,13 @@
   <section>
     <nav>
       <div class="nav-wrapper blue darken-4">
-        <a class="brand-logo center">Lista de Marcas e Carros</a>
+        <a class="brand-logo center">BePsicologia</a>
         <ul id="nav-mobile" class="left ">
-          <li><a href="<?= route("brands.list") ?>">Marcas</a></li>
-          <li><a href="<?= route("cars") ?>">Carros</a></li>
+          <li><a href="<?= route("clients.list") ?>">Clientes</a></li>
         </ul>
         <?php if ($this->currentUser()) : ?>
           <ul id="nav-mobile" class="right ">
-            <li><span class="white-text"><?=$this->currentUser->getName()?></span></li>
+            <li><span class="white-text"><?= $this->currentUser->getName() ?></span></li>
             <li><a href="<?= route("logout") ?>"><button class="waves-effect waves-light btn-flat red darken-1"><span class="white-text">SAIR</span></button></a></li>
           </ul>
         <?php endif; ?>
