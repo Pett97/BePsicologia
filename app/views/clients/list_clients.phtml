@@ -5,8 +5,8 @@
       </button></a>
   </div>
   <?php foreach ($clients as $client) : ?>
-    <ul class="collection registered clients">
-      <li class="collection-item"> <?= $client->getName() ?>
+    <ul class="collection">
+       <li class="collection-item"><?=$client->getName()?> </li>
         <div class="right">
           <form action="<?= route("client.destroy",["id"=>$client->getId()])?>" method="POST">
             <input type="hidden" name="_method" value="DELETE">
@@ -17,7 +17,7 @@
 
         <a href="<?= route("client.edit",["id"=>$client->getId()])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
 
-        <a href="<?= route("clients.show",["id"=>$client->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+        <a href="<?= route("client.show",["id"=>$client->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
       </li>
     </ul>
   <?php endforeach ?>

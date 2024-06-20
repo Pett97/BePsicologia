@@ -17,17 +17,17 @@ class ClientsPopulate
             numberHouse: 123,
             city_id: 1   
         );
-        $client->save();
 
+        $client->save();
         
-        $numberOfClients = 4;
+        $numberOfClients = 75;
 
         for ($i = 1; $i <= $numberOfClients; $i++) {
             $client = new Client(
-                name: 'TestCliente',
+                name: 'TestCliente'.$i,
                 phone: '42988853477',
                 insurance_id: 1,
-                streetName: 'Rua teste',
+                streetName: 'Rua teste'.$i,
                 numberHouse: 1,
                 city_id: 2   
             );

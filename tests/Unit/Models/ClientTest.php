@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Client;
+use Lib\Paginator;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
@@ -18,7 +19,7 @@ class ClientTest extends TestCase
             city_id:0
         );
 
-        $this->assertEquals("ANA", $client->getName());
+        $this->assertEquals("ana", $client->getName());
     }
 
     public function test_dont_create_without_name(): void

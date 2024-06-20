@@ -23,20 +23,22 @@ class ClientsController
     }
 
 
-    // public function authenticated(): void
-    // {
-    //     if(!Auth::check()){
-    //         FlashMessage::danger("erro");
-    //         $this->redirectTo("/login");
-    //     }
-    // }
+    public function authenticated(): void
+    {
+        if (!Auth::check()) {
+            FlashMessage::danger("erro");
+            $this->redirectTo("/login");
+        }
+    }
 
     public function index(Request $request): void
     {
         $page = $request->getParam('page', 1);
-        $itemsPerPage = $request->getParam('items_per_page', 10);
+        $itemsPerPage = $request->getParam('items_per_page', 5);
         $paginator = Client::paginate($page, $itemsPerPage);
         $clients = $paginator->registers();
+
+        //dd($clients);
         $title = "Lista De Clientes";
 
         if ($request->acceptJson()) {
@@ -57,7 +59,15 @@ class ClientsController
     public function create(Request $request): void
     {
         $params = $request->getParams();
-        $client = new Client(name: $params["client_name"]);
+
+        $client = new Client(
+            name: $params["client_name"],
+            phone: $params["client_phone"],
+            insurance_id: $params["client_insurance"],
+            streetName: $params["client_street"],
+            numberHouse: $params["number_house"],
+            city_id: $request["city_id"]
+        );
 
         if ($client->save()) {
             FlashMessage::success("Cliente Salvo Com Sucesso");
@@ -85,8 +95,7 @@ class ClientsController
     {
         $params = $request->getParams();
         $client = Client::findByID($params["id"]);
-
-        $title = "Editar {$client->getName()}";
+        $title = "Editar:  {$client->getName()}";
         $this->render("edit_client", compact("client", "title"));
     }
 
@@ -96,11 +105,22 @@ class ClientsController
 
         $client = Client::findByID($params["id"]);
 
-        $newNameClient = $params["newClient"];
+        $newNameClient = $params["newClientName"];
+        $newPhoneClient = $params["newClientePhone"];
+        $newInsuranceClient = $params["newClientInsuranceID"];
+        $newStreetName = $params["newClientStreetName"];
+        $newHouseNumber = $params["newClientNumberHouse"];
+        $newCityID = $params["newClientCity"];
         $client->setName($newNameClient);
+        $client->setPhone($newPhoneClient);
+        $client->setInsuranceID($newInsuranceClient);
+        $client->setStreetName($newStreetName);
+        $client->setNumberHouse($newHouseNumber);
+        $client->setCityId($newCityID);
+
         $client->save();
         FlashMessage::success("Cliente Atualizado Com Sucesso");
-        $this->redirectTo(route("client.list"));
+        $this->redirectTo(route("clients.list"));
 
         $title = "Editar Client ";
         $this->render("edit_client", compact("client", "title"));
@@ -111,8 +131,8 @@ class ClientsController
         $params = $request->getParams();
         $client = Client::findByID($params["id"]);
         $client->destroy();
-        FlashMessage::success("Client Removidp Com Sucesso");
-        $this->redirectTo(route("brands.list"));
+        FlashMessage::success("Client Removido Com Sucesso");
+        $this->redirectTo(route("clients.list"));
     }
 
 
@@ -127,7 +147,7 @@ class ClientsController
     private function render(string $view, array $data = []): void
     {
         extract($data);
-        $view = "/var/www/app/views/brands/" . $view . ".phtml";
+        $view = "/var/www/app/views/clients/" . $view . ".phtml";
         require "/var/www/app/views/layouts/" . $this->layout . ".phtml";
     }
 

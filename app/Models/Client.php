@@ -8,35 +8,20 @@ use Lib\Paginator;
 
 class Client
 {
-    private string $name = "";
-    private string $phone = "";
-    private int $insurance_id = 0;
-    private string $streetName = "";
-    private int $numberHouse = 0;
-    private int $city_id = 0;
-    private int $id = -1;
-
     /**
      * @var array<string>
      */
     private array $errors = [];
 
     public function __construct(
-        string $name = "",
-        string $phone = "",
-        int $insurance_id = 0,
-        int $numberHouse = 0,
-        string $streetName = "",
-        int $city_id = 0,
-        int $id = -1
+        private int $id = -1,
+        private string $name = "",
+        private string $phone = "",
+        private int $insurance_id = 0,
+        private string $streetName = "",
+        private int $numberHouse = 0,
+        private int $city_id = 0,
     ) {
-        $this->name = trim(strtoupper($name));
-        $this->phone = trim($phone);
-        $this->insurance_id = $insurance_id;
-        $this->numberHouse = $numberHouse;
-        $this->streetName = $streetName;
-        $this->city_id = $city_id;
-        $this->id = $id;
     }
 
     public function setPhone(string $phone): void
@@ -142,6 +127,7 @@ class Client
                 $stmt->bindParam(":city_id", $this->city_id);
 
                 $stmt->execute();
+
                 return true;
             } catch (\PDOException $e) {
                 $this->addError("Database error: " . $e->getMessage());
@@ -198,7 +184,7 @@ class Client
     public static function findByID(int $id): ?Client
     {
         $pdo = Database::getDatabaseConn();
-        $sql = "SELECT id, name FROM clients WHERE id = :id";
+        $sql = "SELECT id, name, phone, insurance_id, street_name, number, city_id FROM clients WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
@@ -209,7 +195,15 @@ class Client
 
         $row = $stmt->fetch();
 
-        return new Client(id: $row["id"], name: $row["name"]);
+        return new Client(
+            id: $row["id"],
+            name: $row["name"],
+            phone: $row["phone"],
+            insurance_id: $row["insurance_id"],
+            streetName: $row["street_name"],
+            numberHouse: $row["number"],
+            city_id: $row["city_id"]
+        );
     }
 
     public function destroy(): bool

@@ -87,7 +87,7 @@ class Paginator
         $this->registers = [];
         $this->offset = $this->per_page * ($this->page - 1);
 
-        $attributes = implode(', ', $this->attributes);
+        $attributes = implode(',', $this->attributes);
 
         $sql = <<<SQL
             SELECT id, {$attributes} FROM {$this->table}

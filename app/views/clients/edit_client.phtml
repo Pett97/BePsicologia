@@ -1,13 +1,43 @@
 <section>
   <div class="row">
-    <form action="<?= route("brand.update",["id"=>$brand->getId()])?>" method="POST" class="col s12">
+    <form action="<?= route("client.update", ["id" => $client->getId()]) ?>" method="POST" class="col s12">
       <div class="row">
-        <div class="input-field col s12 m12 l12">
-        <input type="hidden" name="_method" value="PUT">
-          <input type="text" readonly name="idBrandForEdit" value="<?=$brand->getID()?>">
-          <input placeholder="Novo Nome" id="newBrandName" type="text" class="validate" name="newBrandName" required>
-          <label for="newBrandName">Editar Nome  Marca <?=$brand->getName()?></label>
+        <div class="input-field col s12 m3 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getName() ?>" placeholder="Novo Nome" id="newClienteName" type="text" class="validate" name="newClientName" required>
+          <label for="newClienteName">Editar Nome Cliente <?= $client->getID() ?></label>
         </div>
+
+        <div class="input-field col s12 m12 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getPhone() ?>" placeholder="NovoTelefone" id="newClientePhone" type="text" class="validate" name="newClientePhone" required>
+          <label for="newClientePhone">Telefone</label>
+        </div>
+
+        <div class="input-field col s12 m12 l12">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getInsuranceID() ?>" placeholder="newClientInsuranceID" id="newClientInsuranceID" type="text" class="validate" name="newClientInsuranceID" required>
+          <label for="newClientInsuranceID">Convenio</label>
+        </div>
+
+        <div class="input-field col s12 m3 l3">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getStreetName() ?>" placeholder="newClientStreetName" id="newClientStreetName" type="text" class="validate" name="newClientStreetName" required>
+          <label for="newClientStreetName">Endereço</label>
+        </div>
+
+        <div class="input-field col s12 m3 l3">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getNumberHouse() ?>" placeholder="newClientNumberHouse" id="newClientNumberHouse" type="text" class="validate" name="newClientNumberHouse" required>
+          <label for="newClientNumberHouse">numero</label>
+        </div>
+
+        <div class="input-field col s12 m3 l3">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $client->getCityId() ?>" placeholder="newClientCity" id="newClientCity" type="text" class="validate" name="newClientCity" required>
+          <label for="newClientCity">Cidade</label>
+        </div>
+
       </div>
       <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
     </form>

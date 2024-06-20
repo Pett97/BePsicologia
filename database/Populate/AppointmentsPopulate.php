@@ -31,6 +31,7 @@ class AppointmentsPopulate
 
 
         $test = new Appointment(
+            //user_id
             userID: 2,
             date: new \DateTime("2024-06-15"),
             startHour: new \DateTime("2024-06-15 13:00:00"),

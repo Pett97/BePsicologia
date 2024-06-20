@@ -42,7 +42,8 @@ CREATE TABLE clients (
     street_name VARCHAR(255) NOT NULL,
     number INT NOT NULL,
     city_id INT NOT NULL,
-    FOREIGN KEY (city_id) REFERENCES citys(id)
+    FOREIGN KEY (city_id) REFERENCES citys(id),
+    FOREIGN KEY (insurance_id) REFERENCES insurances(id)
 );
 
 DROP TABLE IF EXISTS appointments;

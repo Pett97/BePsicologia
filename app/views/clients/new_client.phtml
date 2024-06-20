@@ -1,10 +1,30 @@
 <section>
   <div class="row">
-    <form action="<?= route("create.brand")?>" method="POST" class="col s12">
+    <form action="<?= route("create.client")?>" method="POST" class="col s12">
       <div class="row">
-        <div class="input-field col s12 m12 l12">
-          <input placeholder="Exemplo: FORD" id="brand_name" type="text" class="validate" name="brand_name" required>
-          <label for="brand_name">Nome Marca</label>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="Exemplo: Ana" id="client_name" type="text" class="validate" name="client_name" required>
+          <label for="client_name">Nome Cliente:</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="42991999" id="client_phone" type="text" class="validate" name="client_phone" required>
+          <label for="client_name">Telefone:</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="Convenio X" id="client_insurance" type="number" class="validate" name="client_insurance" required>
+          <label for="client_insurance">Convenio:</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="Exemplo:Rua 1 " id="client_street" type="text" class="validate" name="client_street" required>
+          <label for="client_street">Rua:</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="255" id="number_house" type="number" class="validate" name="number_house" required>
+          <label for="number_house">numero:</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="255" id="city_id" type="number" class="validate" name="city_id" required>
+          <label for="city_id">Cidade ID:</label>
         </div>
       </div>
       <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>

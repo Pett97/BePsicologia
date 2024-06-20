@@ -8,7 +8,7 @@ class IndexTest extends TestCase
 {
     public function test_should_redirect_if_not_authenticated_to_index(): void
     {
-        $page = file_get_contents('http://web/brands');
+        $page = file_get_contents('http://web/clients');
         $this->assertTrue(http_response_code(302));
 
         $location = $http_response_header[10];
