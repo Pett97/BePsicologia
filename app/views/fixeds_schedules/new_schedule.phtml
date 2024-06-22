@@ -1,0 +1,25 @@
+<section>
+  <div class="row">
+    <form action="<?= route("create.schedule")?>" method="POST" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="Psicologo" id="psicoID" type="text" class="validate" name="psicoID" required>
+          <label for="psicoID">Selecione o Psicologo</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="2 : Para Segunda Feira" id="dayOFWeek" type="text" class="validate" name="dayOFWeek" required>
+          <label for="dayOFWeek">Dia da Semana</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="2 : Para Segunda Feira" id="startTime" type="text" class="validate" name="startTime" required>
+          <label for="startTime">Data de Inicio</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input placeholder="2 : Para Segunda Feira" id="endTime" type="text" class="validate" name="endTime" required>
+          <label for="endTime">Data de Fim</label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
+    </form>
+  </div>
+</section>

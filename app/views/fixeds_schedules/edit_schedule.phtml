@@ -1,0 +1,29 @@
+<section>
+  <div class="row">
+    <form action="<?= route("schedule.update", ["id" => $fixedSchedule->getId()]) ?>" method="POST" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m3 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $fixedSchedule->getUserID() ?>" placeholder="Psicologo" id="userID" type="text" name="userID" readonly>
+          <label for="userID">Nome Psicologo <?= $fixedSchedule->getUserID() ?></label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $fixedSchedule->getDayOFWeek() ?>" placeholder="Novo Dia Semana" id="newDayOFWeek" type="text" class="validate" name="newDayOFWeek" required>
+          <label for="newDayOFWeek">Dia Semana</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $fixedSchedule->getStartTime()->format('D:M:Y:H:i:s') ?>" placeholder="Novo Horário de Inicio" id="newStartTime" type="text" class="validate" name="newStartTime" required>
+          <label for="newStartTime">Horario inicio</label>
+        </div>
+        <div class="input-field col s12 m12 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $fixedSchedule->getEndTime()->format('D:M:Y:H:i:s')?>" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="text" class="validate" name="newEndTime" required>
+          <label for="newEndTime">Horario FIm</label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
+    </form>
+  </div>
+</section>

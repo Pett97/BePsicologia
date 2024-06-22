@@ -3,6 +3,7 @@
 use App\Controllers\AuthenticationsController;
 use Core\Router\Route;
 use App\Controllers\ClientsController;
+use App\Controllers\FixedsSchedulesController;
 
 //Authentication
 Route::get('/login', [AuthenticationsController::class, 'new'])->name('users.login');
@@ -33,6 +34,21 @@ Route::middleware("auth")->group(function () {
 
     //-----------------------------------------------------------------------------
     //routes about fixed_schedules
+
+    //create
+    Route::get("/schedules/new", [FixedsSchedulesController::class, "new"])->name("schedule.new");
+    Route::post("/schedules", [FixedsSchedulesController::class, "create"])->name("create.schedule");
+
+    // Retrieve
+    Route::get("/schedules", [FixedsSchedulesController::class, "index"])->name("schedules.list");
+    Route::get("/schedule/{id}", [FixedsSchedulesController::class, "show"])->name("schedule.show");
+    // Update
+    Route::get("/schedule/{id}/edit", [FixedsSchedulesController::class, "edit"])->name("schedule.edit");
+    Route::put("/schedule/update/{id}", [FixedsSchedulesController::class, "update"])->name("schedule.update");
+
+    //Delete
+    Route::delete("/schedule/{id}", [FixedsSchedulesController::class, "delete"])->name("schedule.destroy");
+
 
 
     Route::get('/logout', [AuthenticationsController::class, 'destroy'])->name('logout');

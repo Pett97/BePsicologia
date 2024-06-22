@@ -1,0 +1,39 @@
+<section>
+  <div>
+    <h4>Horários</h4>
+    <a href="<?= route("schedule.new") ?>"><button class="btn waves-effect waves-light green " type="submit" name="action">Novo
+      </button></a>
+  </div>
+  <table class="centered  responsive-table">
+    <thead>
+      <tr>
+        <th>Psicologo</th>
+        <th>Dia Semana</th>
+        <th>Inicio</th>
+        <th>Fim</th>
+      </tr>
+    </thead>
+    <?php foreach ($fixedSchedules as $fS) : ?>
+      <tbody>
+        <tr>
+          <td><?= $fS->getUserID() ?></td>
+          <td><?= $fS->getDayOfWeek() ?></td>
+          <td><?= $fS->getStartTime()->format('H:i:s') ?></td>
+          <td><?= $fS->getEndTime()->format('H:i:s') ?></td>
+          <td>
+            <div class="left">
+              <a href="<?= route("schedule.edit", ["id" => $fS->getID()]) ?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+
+
+            </div>
+            <form action="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <input type="hidden" name="id_delete" value="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>">
+              <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    <?php endforeach ?>
+  </table>
+</section>
