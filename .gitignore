@@ -4,7 +4,8 @@
 #ignore cache folder
 .cache/*
 
-#igone log
-/log/*
+# Ignore logs and temporay files
+*.log
+*.temp
 
 #ignore envgit a
