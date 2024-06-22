@@ -24,13 +24,13 @@ class AppointmentsController
     }
 
 
-    public function authenticated(): void
-    {
-        if (!Auth::check()) {
-            FlashMessage::danger("erro");
-            $this->redirectTo("/login");
-        }
-    }
+    //public function authenticated(): void
+    //{
+    //    if (!Auth::check()) {
+    //        FlashMessage::danger("erro");
+    //        $this->redirectTo("/login");
+    //    }
+    //}
 
     public function index(Request $request): void
     {

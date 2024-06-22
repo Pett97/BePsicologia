@@ -105,7 +105,7 @@ class Router
 
         foreach ($this->routes as $route) {
             if ($route->match($request)) {
-                $route->runMiddleware($request);
+                $route->runMiddlewares($request);
                 $controllerName = $route->getControllerName();
                 $action = $route->getActionName();
                 $controller = new $controllerName();

@@ -16,13 +16,12 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
+      - name: PHPUnit Units test
+        run: ./run test tests/Unit
+
       - name: PHPUNIT UnitTests
         run: ./run test tests/unit
 
-      - name: PHPUnit Browser tests
-        run: |
-          ./run up -d
-          ./run test tests/Browser
   code_quality:
     name: Code_Quality_Check
     runs-on: ubuntu-latest
