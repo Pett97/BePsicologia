@@ -12,7 +12,7 @@ class FixedSchedulePopulate
     public static function populate()
     {
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $test = new FixedSchedule(
                 userID: 1,
                 dayOFWeek: $i,
