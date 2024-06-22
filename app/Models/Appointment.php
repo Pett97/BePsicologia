@@ -34,7 +34,7 @@ class Appointment
     {
         try {
             $pdo = Database::getDatabaseConn();
-            $sql = "DELETE FROM clients WHERE id = :id";
+            $sql = "DELETE FROM appointments WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(":id", $this->id);
             $stmt->execute();

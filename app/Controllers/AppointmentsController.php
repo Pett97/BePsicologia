@@ -68,7 +68,7 @@ class AppointmentsController
         $hours = intval($params["hours"]);
 
 
-        
+
         $appointment = new Appointment(
             userID: $userID,
             date: $date,
@@ -141,7 +141,7 @@ class AppointmentsController
         $appointment = Appointment::findByID($params["id"]);
         $appointment->destroy();
         FlashMessage::success("Agendamento Removido Com Sucesso");
-        $this->redirectTo(route("list_appointment"));
+        $this->redirectTo(route("list.appointaments"));
     }
 
 
