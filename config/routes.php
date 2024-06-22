@@ -15,6 +15,7 @@ Route::post('/login', [AuthenticationsController::class, 'authenticate'])->name(
 Route::middleware("auth")->group(function () {
     //Clients
     Route::get("/", [AuthenticationsController::class, "new"])->name("users.login");
+    Route::get("/login", [AuthenticationsController::class, "new"])->name("users.login");
     Route::get("/clients/page/{page}", [ClientsController::class, "index"])->name("clients.paginate");
 
     //create

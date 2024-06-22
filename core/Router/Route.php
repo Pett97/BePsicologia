@@ -143,7 +143,7 @@ class Route
         $this->middlewares[] = $middleware;
     }
 
-    public function runMiddleware(Request $request): void
+    public function runMiddlewares(Request $request): void
     {
         foreach ($this->middlewares as $middleware) {
             $middleware->handle($request);
