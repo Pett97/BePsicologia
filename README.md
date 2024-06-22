@@ -1,5 +1,5 @@
 <div style="text-align: justify;">
-#[WIKI](https://github.com/Pett97/BePsicologia/wiki)
+WIKI - https://github.com/Pett97/BePsicologia/wiki
 
 ## Peterson Henrique de Padua
 ## Rafael Rodrigutes Padilha
