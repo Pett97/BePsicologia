@@ -68,6 +68,7 @@ class AppointmentsController
         $hours = intval($params["hours"]);
 
 
+        
         $appointment = new Appointment(
             userID: $userID,
             date: $date,
