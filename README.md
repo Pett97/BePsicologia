@@ -10,6 +10,7 @@ WIKI - https://github.com/Pett97/BePsicologia/wiki
 BePsicologia - Sistema para gerenciamento de consultas 
 "
 
+
 ### Dependências
 
 - Docker
