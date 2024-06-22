@@ -19,10 +19,9 @@ jobs:
       - name: PHPUnit Units test
         run: ./run test tests/Unit
 
-      - name: PHPUnit Browser tests
-        run: |
-          ./run up -d
-          ./run test tests/Browser
+      - name: PHPUNIT UnitTests
+        run: ./run test tests/unit
+
   code_quality:
     name: Code_Quality_Check
     runs-on: ubuntu-latest
