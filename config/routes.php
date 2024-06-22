@@ -41,15 +41,13 @@ Route::middleware("auth")->group(function () {
 
     // Retrieve
     Route::get("/schedules", [FixedsSchedulesController::class, "index"])->name("schedules.list");
-    Route::get("/schedules/{id}", [FixedsSchedulesController::class, "show"])->name("schedule.show");
-
+    Route::get("/schedule/{id}", [FixedsSchedulesController::class, "show"])->name("schedule.show");
     // Update
     Route::get("/schedule/{id}/edit", [FixedsSchedulesController::class, "edit"])->name("schedule.edit");
     Route::put("/schedule/update/{id}", [FixedsSchedulesController::class, "update"])->name("schedule.update");
 
     //Delete
     Route::delete("/schedule/{id}", [FixedsSchedulesController::class, "delete"])->name("schedule.destroy");
-
 
 
 

@@ -1,0 +1,33 @@
+<div class="center-align">
+  <div class="row ">
+    <div class="col l12 m12 s12">
+      <div class="card blue darken-4">
+        <div class="card-content white-text">
+          <div class="row">
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Nome: ".$client->getName() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Telefone: ". $client->getPhone() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Convenio: ". $client->getInsuranceID() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Endereço: ". $client->getStreetName() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="N: ". $client->getNumberHouse() ?></span>
+            </div>
+            <div class="col s12 m6 l6">
+              <span class="card-title center-align"><?="Cidade: ". $client->getCityId() ?></span>
+            </div>
+          </div>
+        </div>
+        <div class="card-action right-align">
+          <a href="/clients">Voltar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,10 +12,10 @@ class FixedSchedulePopulate
     public static function populate()
     {
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $test = new FixedSchedule(
                 userID: 1,
-                dayOFWeek: 4,
+                dayOFWeek: $i,
                 startTime: new \DateTime("2024-06-15 13:00:00"),
                 endTime: new \DateTime("2024-06-15 17:00:00")
             );

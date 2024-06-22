@@ -14,13 +14,13 @@
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="Horario Inicio" placeholder="Novo Horário de Inicio" id="newStartTime" type="date" class="validate" name="newStartTime" required>
-          <label for="newStartTime">Horario inicio</label>
+          <input value="<?=$fixedSchedule->getStartTime()->format('H:i:s')?>" placeholder="Novo Horário de Inicio" id="newDateStart" type="text" class="validate" name="newDateStart" required>
+          <label for="newDateStart">Nova Data Inicio</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="Final" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="date" class="validate" name="newEndTime" required>
-          <label for="newEndTime">Horario FIm</label>
+          <input value="<?=$fixedSchedule->getEndTime()->format('H:i:s')?>" placeholder="Novo Horário de Fim" id="newDateEnd" type="text" class="datepicker validate" name="newDateEnd" required>
+          <label for="newDateEnd">Nova Data Fim</label>
         </div>
       </div>
       <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>

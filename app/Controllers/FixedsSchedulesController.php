@@ -6,6 +6,7 @@ use App\Models\FixedSchedule;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use App\Models\User;
+use DateTime;
 use Lib\Authentication\Auth;
 
 class FixedsSchedulesController
@@ -34,7 +35,7 @@ class FixedsSchedulesController
     public function index(Request $request): void
     {
         $page = $request->getParam('page', 1);
-        $itemsPerPage = $request->getParam('items_per_page', 5);
+        $itemsPerPage = $request->getParam('items_per_page', 10);
         $paginator = FixedSchedule::paginate($page, $itemsPerPage);
         $fixedSchedules = $paginator->registers();
 
@@ -82,7 +83,7 @@ class FixedsSchedulesController
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
 
         if ($fixedSchedule !== null) {
-            $title = "Horário Usuário:" .$fixedSchedule->getUserID();
+            $title = "Horário Usuário:" . $fixedSchedule->getUserID();
             $this->render("detail_schedule", compact("fixedSchedule", "title"));
         } else {
             $this->redirectTo(route("client.list"));
@@ -104,25 +105,29 @@ class FixedsSchedulesController
         $params = $request->getParams();
 
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
-
+        $newDayOFWeek = $params["newDayOFWeek"];
         $newDateStart = $params["newDateStart"];
-        $newDateStart = $params["newDateEnd"];
+        $newEndStart = $params["newDateEnd"];
+        $fixedSchedule->setDayOFWeek($newDayOFWeek);
+        $fixedSchedule->setStartTime(new DateTime($newDateStart));
+        $fixedSchedule->setEndTime(new DateTime($newEndStart));
 
         $fixedSchedule->save();
         FlashMessage::success("Horário Atualizado Com Sucesso");
-        $this->redirectTo(route("clients.list"));
+        $this->redirectTo(route("schedules.list"));
 
         $title = "Editar Horário ";
-        $this->render("edit_client", compact("client", "title"));
+        $this->render("edit_schedule", compact("fixedSchedule", "title"));
     }
 
     public function delete(Request $request): void
     {
+
         $params = $request->getParams();
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
         $fixedSchedule->destroy();
         FlashMessage::success("Horário  Removido Com Sucesso");
-        $this->redirectTo(route("clients.list"));
+        $this->redirectTo(route("schedules.list"));
     }
 
 

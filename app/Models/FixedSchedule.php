@@ -15,12 +15,53 @@ class FixedSchedule
 
     public function __construct(
         private int $id = -1,
-        private int $userID =0,
-        private int $dayOFWeek=0,
-        private DateTime $startTime= new \DateTime("2024-06-15 17:00:00"),
-        private DateTime $endTime = new \DateTime("2024-06-15 17:00:00")
+        private int $userID = 0,
+        private int $dayOFWeek = 3,
+        private DateTime|string $startTime = "2024-06-15 17:00:00",
+        private DateTime|string $endTime = "2024-06-15 17:00:00"
     ) {
+        $this->startTime = $this->startTime instanceof DateTime ? $this->startTime : new DateTime($this->startTime);
+        $this->endTime = $this->endTime instanceof DateTime ? $this->endTime : new DateTime($this->endTime);
+    }
 
+    public function getUserID(): int
+    {
+        return $this->userID;
+    }
+
+    public function setUserID(int $value): void
+    {
+        $this->userID = $value;
+    }
+
+    public function getDayOFWeek(): int
+    {
+        return $this->dayOFWeek;
+    }
+
+    public function setDayOFWeek(int $value): void
+    {
+        $this->dayOFWeek = $value;
+    }
+
+    public function getStartTime(): DateTime
+    {
+        return $this->startTime;
+    }
+
+    public function setStartTime(DateTime $value): void
+    {
+        $this->startTime = $value;
+    }
+
+    public function getEndTime(): DateTime
+    {
+        return $this->endTime;
+    }
+
+    public function setEndTime(DateTime $value): void
+    {
+        $this->endTime = $value;
     }
 
     public function setId(int $id): void
@@ -66,59 +107,46 @@ class FixedSchedule
     public function save(): bool
     {
         if ($this->isValid()) {
-            $pdo = Database::getDatabaseConn();
-            $sql = 'INSERT INTO fixed_schedules (psychologist_id, day_of_week, start_time, end_time) 
-            VALUES (:user, :day_of_week, :start_time, :end_time)';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':user', $this->getUserID());
-            $stmt->bindValue(':day_of_week', $this->getDayOFWeek());
-            $stmt->bindValue(':start_time', $this->getStartTime()->format('H:i:s'));
-            $stmt->bindValue(':end_time', $this->getEndTime()->format('H:i:s'));
-            $stmt->execute();
-            return true;
+            try {
+                $pdo = Database::getDatabaseConn();
+                if ($this->newRecord()) {
+                    $sql = 'INSERT INTO fixed_schedules (psychologist_id, day_of_week, start_time, end_time) 
+                VALUES (:user, :day_of_week, :start_time, :end_time)';
+                    $stmt = $pdo->prepare($sql);
+                } else {
+                    $sql = 'UPDATE fixed_schedules SET psychologist_id = :user, day_of_week = :day_of_week, 
+                        start_time = :start_time, end_time = :end_time WHERE id = :id';
+                    $stmt = $pdo->prepare($sql);
+                    $id = $this->id;
+                    $stmt->bindParam(':id', $id);
+                }
+                $userID = $this->getUserID();
+                $dayOfWeek = $this->getDayOFWeek();
+                $startTime = $this->getStartTime()->format('H:i:s');
+                $endTime = $this->getEndTime()->format('H:i:s');
+
+                $stmt->bindParam(':user', $userID);
+                $stmt->bindParam(':day_of_week', $dayOfWeek);
+                $stmt->bindParam(':start_time', $startTime);
+                $stmt->bindParam(':end_time', $endTime);
+
+                $stmt->execute();
+
+                return true;
+            } catch (\PDOException $e) {
+                $this->errors['database'] = "Database error: " . $e->getMessage();
+            }
         }
         return false;
     }
 
-    public function getUserID(): int
+
+    public function newRecord(): bool
     {
-        return $this->userID;
+        return $this->id == -1;
     }
 
-    public function setUserID(int $value): void
-    {
-        $this->userID = $value;
-    }
 
-    public function getDayOFWeek(): int
-    {
-        return $this->dayOFWeek;
-    }
-
-    public function setDayOFWeek(int $value): void
-    {
-        $this->dayOFWeek = $value;
-    }
-
-    public function getStartTime(): DateTime
-    {
-        return $this->startTime;
-    }
-
-    public function setStartTime(DateTime $value): void
-    {
-        $this->startTime = $value;
-    }
-
-    public function getEndTime(): DateTime
-    {
-        return $this->endTime;
-    }
-
-    public function setEndTime(DateTime $value): void
-    {
-        $this->endTime = $value;
-    }
 
     public static function findByID(int $id): ?FixedSchedule
     {
@@ -133,7 +161,6 @@ class FixedSchedule
         }
 
         $row = $stmt->fetch();
-        
 
         return new FixedSchedule(
             id: $row["id"],
@@ -167,7 +194,7 @@ class FixedSchedule
             page: $page,
             per_page: $per_page,
             table: 'fixed_schedules',
-            attributes: ["id"]
+            attributes: ["psychologist_id", "day_of_week", "start_time"]
         );
     }
 }
