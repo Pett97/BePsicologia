@@ -52,9 +52,9 @@ class FixedsSchedulesController
     public function new(): void
     {
         $title = "Novo Horário";
-        $client = new FixedSchedule();
-        $this->render("new_client", compact("fixedSchedules", "title"));
-        $view = "/var/www/app/views/clients/.phtml";
+        $fixedSchedule = new FixedSchedule();
+        $this->render("new_schedule", compact("fixedSchedule", "title"));
+        $view = "/var/www/app/views/fixeds_shedules/.phtml";
     }
 
     public function create(Request $request): void
@@ -62,7 +62,7 @@ class FixedsSchedulesController
         $params = $request->getParams();
 
         $fixedSchedule = new FixedSchedule(
-            userID: $params["user_id"],
+            userID: $params["psicoID"],
             dayOFWeek: $params["dayOFWeek"],
             startTime: new \DateTime($params["startTime"]),
             endTime: new \DateTime($params["endTime"])

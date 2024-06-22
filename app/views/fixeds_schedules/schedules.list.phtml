@@ -26,9 +26,9 @@
 
 
             </div>
-            <form action="<?= route("schedule.destroy",["id"=>$fS->getId()])?>?>" method="POST">
+            <form action="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>" method="POST">
               <input type="hidden" name="_method" value="DELETE">
-              <input type="hidden" name="id_delete" value="<?= route("schedule.destroy",["id"=>$fS->getId()])?>">
+              <input type="hidden" name="id_delete" value="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>">
               <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
             </form>
           </td>
