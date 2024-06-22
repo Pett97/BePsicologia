@@ -66,14 +66,14 @@ class ClientsController
             insurance_id: $params["client_insurance"],
             streetName: $params["client_street"],
             numberHouse: $params["number_house"],
-            city_id: $request["city_id"]
+            city_id: $params["city_id"]
         );
 
         if ($client->save()) {
             FlashMessage::success("Cliente Salvo Com Sucesso");
             $this->redirectTo(route("clients.list"));
         } else {
-            $title = "Nono Client";
+            $title = "Novo Client";
             $this->render("list_client", compact("client", "title"));
         }
     }

@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use App\Models\User;
+use DateTime;
 use Lib\Authentication\Auth;
 
 class AppointmentsController
@@ -52,7 +53,7 @@ class AppointmentsController
     {
         $title = "Novo Agendamento";
         $appointment = new Appointment();
-        $this->render("new_client", compact("appointment", "title"));
+        $this->render("new_appointment", compact("appointment", "title"));
         $view = "/var/www/app/views/appointments/.phtml";
     }
 
@@ -60,20 +61,27 @@ class AppointmentsController
     {
         $params = $request->getParams();
 
+        $userID = intval($params["userID"]);
+        $clientID = intval($params["clientID"]);
+        $date = DateTime::createFromFormat('d/m/Y', $params["date"]);
+        $startHour = DateTime::createFromFormat('H:i:s', $params["startHour"]);
+        $hours = intval($params["hours"]);
+
+
         $appointment = new Appointment(
-            userID: $params["userID"],
-            date: $params["date"],
-            startHour: $params["startHour"],
-            periodHours: $params["endHour"],
-            clientID: $params["clientID"]
+            userID: $userID,
+            date: $date,
+            startHour: $startHour,
+            periodHours: $hours,
+            clientID: $clientID
         );
 
         if ($appointment->save()) {
             FlashMessage::success("Agendamento Salvo Com Sucesso");
-            $this->redirectTo(route("clients.list"));
+            $this->redirectTo(route("list.appointaments"));
         } else {
-            $title = "Novo Agendamento";
-            $this->render("list_appointment", compact("appointment", "title"));
+            $title = "Novo Agendamento ";
+            $this->render("new_appointment", compact("appointment", "title"));
         }
     }
 
@@ -83,10 +91,10 @@ class AppointmentsController
         $appointment = Appointment::findByID($params["id"]);
 
         if ($appointment !== null) {
-            $title = $appointment->getID();
+            $title = "Agendamento: " . $appointment->getID();
             $this->render("appointment_detail", compact("appointment", "title"));
         } else {
-            $this->redirectTo(route("appointment.list"));
+            $this->redirectTo(route("list.appointaments"));
         }
     }
 
@@ -103,16 +111,24 @@ class AppointmentsController
         $params = $request->getParams();
 
         $appointment = Appointment::findByID($params["id"]);
+        $userID = $params["newUserID"];
+        $date = DateTime::createFromFormat('d/m/Y', $params["newDate"]);
+        $startHour = DateTime::createFromFormat('H:i:s', $params["newStartHour"]);
+        $endHour = DateTime::createFromFormat('H:i:s', $params["newEndHours"]);
+        $interval = $startHour->diff($endHour);
+        $hours = $interval->h;
+        $clientID = $params["newClientID"];
 
-        $newUserID = $params["userID"];
-        $newDate = $params["date"];
-        $newStarHour = $params["startHour"];
-        $newPeriodHours = $params["periodHours"];
-        $newClientID = $params["clientID"];
+
+        $appointment->setUserID($userID);
+        $appointment->setDate($date);
+        $appointment->setStartHour($startHour);
+        $appointment->setPeriodHours($hours);
+        $appointment->setClientID($clientID);
 
         $appointment->save();
         FlashMessage::success("Agendamento Atualizado Com Sucesso");
-        $this->redirectTo(route("appointments.list"));
+        $this->redirectTo(route("list.appointaments"));
 
         $title = "Editar Agentamento ";
         $this->render("edit_appointment", compact("appointment", "title"));

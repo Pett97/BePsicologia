@@ -43,7 +43,7 @@ Route::middleware("auth")->group(function () {
     // Retrieve
     Route::get("/schedules", [FixedsSchedulesController::class, "index"])->name("schedules.list");
     Route::get("/schedule/{id}", [FixedsSchedulesController::class, "show"])->name("schedule.show");
-    
+
 
     // Update
     Route::get("/schedule/{id}/edit", [FixedsSchedulesController::class, "edit"])->name("schedule.edit");
@@ -59,17 +59,19 @@ Route::middleware("auth")->group(function () {
     //create
     Route::get("/appointaments/new", [AppointmentsController::class, "new"])->name("appointament.new");
     Route::post("/appointaments", [AppointmentsController::class, "create"])->name("create.appointaments");
-    Route::get("/appointaments/page/{page}", [AppointmentsController::class, "index"])->name("appointaments.paginate");;
 
     // Retrieve
     Route::get("/appointaments", [AppointmentsController::class, "index"])->name("list.appointaments");
+
+    Route::get("/appointaments/page/{page}", [AppointmentsController::class, "index"])->name("appointments.paginate");
+
     Route::get("/appointaments/{id}", [AppointmentsController::class, "show"])->name("appointaments.show");
     // Update
     Route::get("/appointaments/{id}/edit", [AppointmentsController::class, "edit"])->name("appointaments.edit");
     Route::put("/appointaments/update/{id}", [AppointmentsController::class, "update"])->name("appointaments.update");
 
     //Delete
-    Route::delete("/appointaments/{id}", [AppointmentsController::class, "delete"])->name("schappointamentsedule.destroy");
+    Route::delete("/appointaments/{id}", [AppointmentsController::class, "delete"])->name("appointament.destroy");
 
     Route::get('/logout', [AuthenticationsController::class, 'destroy'])->name('logout');
 });

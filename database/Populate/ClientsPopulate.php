@@ -20,7 +20,7 @@ class ClientsPopulate
 
         $client->save();
         
-        $numberOfClients = 75;
+        $numberOfClients = 2;
 
         for ($i = 1; $i <= $numberOfClients; $i++) {
             $client = new Client(

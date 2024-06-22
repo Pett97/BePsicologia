@@ -1,0 +1,38 @@
+<section>
+  <div class="row">
+    <form action="<?= route("appointaments.update", ["id" => $appointment->getId()]) ?>" method="POST" class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m3 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $appointment->getUserID()?>" placeholder="Novo Nome" id="newUserID" type="text" class="validate" name="newUserID" required>
+          <label for="newUserID">Editar Responsável <?= $appointment->getUserID()?></label>
+        </div>
+
+        <div class="input-field col s12 m12 l6">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $appointment->getDate()->format("d/m/Y")?>" placeholder="Nova Data " id="newDate" type="text" class="validate" name="newDate" required>
+          <label for="newDate">Nova Data</label>
+        </div>
+
+        <div class="input-field col s12 m12 l12">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $appointment->getStartHour()->format("H:i:s")?>" placeholder="newClientInsuranceID" id="newStartHour" type="text" class="validate" name="newStartHour" required>
+          <label for="newStartHour">Novo Horário Inicio</label>
+        </div>
+
+        <div class="input-field col s12 m12 l12">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $appointment->getEndDate()->format("H:i:s")?>" placeholder="newClientInsuranceID" id="newEndHours" type="text" class="validate" name="newEndHours" required>
+          <label for="newEndHours">Novo Horário Termino</label>
+        </div>
+
+        <div class="input-field col s12 m12 l12">
+          <input type="hidden" name="_method" value="PUT">
+          <input value="<?= $appointment->getClientID()?>" placeholder="newClientInsuranceID" id="newClientID" type="text" class="validate" name="newClientID" required>
+          <label for="newClientID">Alteração Cliente</label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
+    </form>
+  </div>
+</section>

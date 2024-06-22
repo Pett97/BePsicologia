@@ -69,11 +69,10 @@ class Appointment
                 }
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(':user', $this->getUserID());
-                $stmt->bindValue(':date', $this->date->format('Y-m-d'), \PDO::PARAM_STR);
-                $stmt->bindValue(':start_time', $this->startHour->format('H:i:s'), \PDO::PARAM_STR);
-                $stmt->bindValue(':end_time', $this->getEndDate()->format('H:i:s'), \PDO::PARAM_STR);
+                $stmt->bindValue(':date', $this->date->format('Y-m-d'));
+                $stmt->bindValue(':start_time', $this->startHour->format('H:i:s'));
+                $stmt->bindValue(':end_time', $this->getEndDate()->format('H:i:s'));
                 $stmt->bindValue(':client_id', $this->getClientID());
-
                 if (!$this->newRecord()) {
                     $stmt->bindParam(':id', $this->id);
                 }
@@ -210,13 +209,18 @@ class Appointment
         }
 
         $row = $stmt->fetch();
+        $startHour = new DateTime($row["start_time"]);
+        $endHour = new DateTime($row["end_time"]);
+        $interval = $startHour->diff($endHour);
+        $hours = $interval->h;
+        $minutes = $interval->i;
 
         return new Appointment(
             id: $row["id"],
             userID: $row["psychologist_id"],
             date: new DateTime($row["date"]),
             startHour: new DateTime($row["start_time"]),
-            periodHours: $row["end_time"],
+            periodHours: $hours,
             clientID: $row["client_id"]
         );
     }
