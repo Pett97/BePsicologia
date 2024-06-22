@@ -16,8 +16,8 @@ jobs:
       - name: Composer install
         run: ./run composer install
 
-      - name: PHPUNIT UnitTests
-        run: ./run test tests/unit
+      - name: PHPUnit Units test
+        run: ./run test tests/Unit
 
       - name: PHPUnit Browser tests
         run: |
