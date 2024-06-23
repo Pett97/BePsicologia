@@ -112,7 +112,7 @@ class Paginator
     public function renderPagesNavigation()
     {
         $paginator = $this;
-        require Constants::rootPath()->join("../../app/views/paginator/_pages.phtml");
+        require Constants::rootPath()->join("/app/views/paginator/_pages.phtml");
     }
 
     public function getRouteName(): string

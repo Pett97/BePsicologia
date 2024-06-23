@@ -7,7 +7,7 @@ use App\Controllers\ClientsController;
 use App\Controllers\FixedsSchedulesController;
 
 //Authentication
-Route::get('/login', [AuthenticationsController::class, 'new'])->name('users.login');
+Route::get('/', [AuthenticationsController::class, 'new'])->name('users.login');
 Route::post('/login', [AuthenticationsController::class, 'authenticate'])->name('authenticate');
 
 

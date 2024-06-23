@@ -14,12 +14,12 @@
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $fixedSchedule->getStartTime()->format('D:M:Y:H:i:s') ?>" placeholder="Novo Horário de Inicio" id="newStartTime" type="text" class="validate" name="newStartTime" required>
+          <input value="<?= $fixedSchedule->getStartTime()->format('d/m/y:H:i:s') ?>" placeholder="Novo Horário de Inicio" id="newStartTime" type="text" class="validate" name="newStartTime" required>
           <label for="newStartTime">Horario inicio</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $fixedSchedule->getEndTime()->format('D:M:Y:H:i:s')?>" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="text" class="validate" name="newEndTime" required>
+          <input value="<?= $fixedSchedule->getEndTime()->format('d/m/y:H:i:s')?>" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="text" class="validate" name="newEndTime" required>
           <label for="newEndTime">Horario FIm</label>
         </div>
       </div>

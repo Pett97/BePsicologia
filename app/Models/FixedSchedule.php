@@ -17,8 +17,8 @@ class FixedSchedule
         private int $id = -1,
         private int $userID = 0,
         private int $dayOFWeek = 3,
-        private DateTime|string $startTime = "2024-06-15 17:00:00",
-        private DateTime|string $endTime = "2024-06-15 17:00:00"
+        private DateTime|string $startTime = "2024-06-15 09:45:00",
+        private DateTime|string $endTime = "2024-06-15 19:47:00"
     ) {
         $this->startTime = $this->startTime instanceof DateTime ? $this->startTime : new DateTime($this->startTime);
         $this->endTime = $this->endTime instanceof DateTime ? $this->endTime : new DateTime($this->endTime);
@@ -194,7 +194,7 @@ class FixedSchedule
             page: $page,
             per_page: $per_page,
             table: 'fixed_schedules',
-            attributes: ["psychologist_id", "day_of_week", "start_time"]
+            attributes: ["psychologist_id", "day_of_week", "start_time","end_time"]
         );
     }
 }

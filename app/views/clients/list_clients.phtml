@@ -6,7 +6,7 @@
   </div>
   <?php foreach ($clients as $client) : ?>
     <ul class="collection">
-       <li class="collection-item"><?=$client->getName()?> </li>
+       <li class="collection-item"><?=$client->getID().":". $client->getName()?> </li>
         <div class="right">
           <form action="<?= route("client.destroy",["id"=>$client->getId()])?>" method="POST">
             <input type="hidden" name="_method" value="DELETE">

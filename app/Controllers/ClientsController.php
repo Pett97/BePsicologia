@@ -6,30 +6,13 @@ use App\Models\Client;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use App\Models\User;
+use Core\Http\Controllers\Controller;
 use Lib\Authentication\Auth;
 
-class ClientsController
+class ClientsController extends Controller
 {
-    private string $layout = "application";
-    private ?User $currentUser = null;
+    
 
-
-    private function currentUser(): ?User
-    {
-        if ($this->currentUser === null) {
-            $this->currentUser = Auth::user();
-        }
-        return $this->currentUser;
-    }
-
-
-    //public function authenticated(): void
-    //{
-    //    if (!Auth::check()) {
-    //        FlashMessage::danger("erro");
-    //        $this->redirectTo("/login");
-    //    }
-    //}
 
     public function index(Request $request): void
     {
@@ -44,7 +27,7 @@ class ClientsController
         if ($request->acceptJson()) {
             $this->renderJson('index', compact("paginator", 'clients', 'title'));
         } else {
-            $this->render('list_clients', compact("paginator", 'clients', 'title'));
+            $this->render('clients/list_clients', compact("paginator", 'clients', 'title'));
         }
     }
 
@@ -52,7 +35,7 @@ class ClientsController
     {
         $title = "Novo Cliente";
         $client = new Client();
-        $this->render("new_client", compact("client", "title"));
+        $this->render("clients/new_client", compact("client", "title"));
         $view = "/var/www/app/views/clients/.phtml";
     }
 
@@ -85,7 +68,7 @@ class ClientsController
 
         if ($client !== null) {
             $title = $client->getName();
-            $this->render("detail_client", compact("client", "title"));
+            $this->render("clients/detail_client", compact("client", "title"));
         } else {
             $this->redirectTo(route("client.list"));
         }
@@ -96,7 +79,7 @@ class ClientsController
         $params = $request->getParams();
         $client = Client::findByID($params["id"]);
         $title = "Editar:  {$client->getName()}";
-        $this->render("edit_client", compact("client", "title"));
+        $this->render("clients/edit_client", compact("client", "title"));
     }
 
     public function update(Request $request): void
@@ -123,7 +106,7 @@ class ClientsController
         $this->redirectTo(route("clients.list"));
 
         $title = "Editar Client ";
-        $this->render("edit_client", compact("client", "title"));
+        $this->render("clients/edit_client", compact("client", "title"));
     }
 
     public function delete(Request $request): void
@@ -131,42 +114,7 @@ class ClientsController
         $params = $request->getParams();
         $client = Client::findByID($params["id"]);
         $client->destroy();
-        FlashMessage::success("Client Removido Com Sucesso");
+        FlashMessage::success("Cliente Removido Com Sucesso");
         $this->redirectTo(route("clients.list"));
     }
-
-
-    private function redirectTo(string $path): void
-    {
-        header("Location:" . $path);
-        exit;
-    }
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function render(string $view, array $data = []): void
-    {
-        extract($data);
-        $view = "/var/www/app/views/clients/" . $view . ".phtml";
-        require "/var/www/app/views/layouts/" . $this->layout . ".phtml";
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function renderJSON(string $view, array $data = []): void
-    {
-        extract($data);
-        $view = "/var/www/app/views/client/" . $view . "json.php";
-        $json = [];
-        include "/var/www/app/views/client/client.json.php";
-        header("Content-Type: application/json; charset=utf-8");
-        echo json_encode($json);
-        return;
-    }
-
-    //private function isJsonRequest(): bool
-    //{
-    //  return (isset($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] === ///'application/json');
-    // }
 }

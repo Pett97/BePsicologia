@@ -18,8 +18,8 @@ class Appointment
     public function __construct(
         private int $id = -1,
         private int $userID = 0,
-        private DateTime|string $date = "2024-06-15",
-        private DateTime|string $startHour = "17:00:00",
+        private DateTime $date = new DateTime("2024-06-15"),
+        private DateTime $startHour = new DateTime("11:00:00"),
         private int $periodHours = 4,
         private int $clientID = 0
     ) {
@@ -192,7 +192,7 @@ class Appointment
             page: $page,
             per_page: $per_page,
             table: 'appointments',
-            attributes: ["psychologist_id"]
+            attributes: ["id"]
         );
     }
 
@@ -209,17 +209,17 @@ class Appointment
         }
 
         $row = $stmt->fetch();
+
         $startHour = new DateTime($row["start_time"]);
         $endHour = new DateTime($row["end_time"]);
         $interval = $startHour->diff($endHour);
-        $hours = $interval->h;
-        $minutes = $interval->i;
+        $hours = $interval->h + ($interval->days * 24) + ($interval->i / 60); // Corrigindo para incluir minutos
 
         return new Appointment(
             id: $row["id"],
             userID: $row["psychologist_id"],
             date: new DateTime($row["date"]),
-            startHour: new DateTime($row["start_time"]),
+            startHour: $startHour,
             periodHours: $hours,
             clientID: $row["client_id"]
         );
