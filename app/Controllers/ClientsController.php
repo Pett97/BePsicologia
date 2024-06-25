@@ -5,9 +5,9 @@ namespace App\Controllers;
 use App\Models\Client;
 use Core\Http\Request;
 use Lib\FlashMessage;
-use App\Models\User;
+
 use Core\Http\Controllers\Controller;
-use Lib\Authentication\Auth;
+
 
 class ClientsController extends Controller
 {

@@ -1,3 +1,4 @@
+<!-- lista   -->
 <section>
     <div>
         <h4>Agendamentos</h4>
@@ -8,20 +9,20 @@
             <div class="col s12 m6">
                 <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
-                        <span class="card-title"><?="Agendamento " . $appointment->getID() ?></span>
-                        <span class="white-text text-darken-2"><?= "Cliente: " . $appointment->getClientID() ?></span>
-                        <p><?= "Data: " . $appointment->getDate()->format("d/m/y") ?></p>
-                        <p><?= "Início: " . $appointment->getStartHour()->format("H:i:s")?></p>
-                        <p><?= "Fim: " . $appointment->getEndDate()->format("H:i:s") ?></p>
-                        <p><?= "Responsável: " . $appointment->getUserID() ?></p>
+                        <span class="card-title"><?="Agendamento " . $appointment->id ?></span>
+                        <span class="white-text text-darken-2"><?= "Cliente:".$appointment->client_id  ?></span>
+                        <p><?= "Data: " . $appointment->date?></p>
+                        <p><?= "Início: " . $appointment->start_time?></p>
+                        <p><?= "Fim: " . $appointment->end_time?></p>
+                        <p><?= "Responsável: " . $appointment->psychologist_id  ?></p>
                     </div>
                     <div class="card-action">
-                        <a href="<?= route("appointaments.show", ["id" => $appointment->getID()]) ?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
-                        <a href="<?= route("appointaments.edit", ["id" => $appointment->getID()]) ?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+                        <a href="<?= route("appointaments.show", ["id" => $appointment->id]) ?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+                        <a href="<?= route("appointaments.edit", ["id" => $appointment->id]) ?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
                         <div class="right">
-                            <form action="<?= route("appointament.destroy", ["id" => $appointment->getID()]) ?>" method="POST">
+                            <form action="<?= route("appointament.destroy", ["id" => $appointment->id]) ?>" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="id_delete" value="<?= route("appointament.destroy", ["id" => $appointment->getID()]) ?>">
+                                <input type="hidden" name="id_delete" value="<?= route("appointament.destroy", ["id" => $appointment->id]) ?>">
                                 <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
                             </form>
                         </div>

@@ -26,8 +26,7 @@ class AuthenticationsController extends Controller
         if ($user && $user->authenticate($params['password'])) {
             Auth::login($user);
             FlashMessage::success('Login realizado com sucesso!');
-            $_SESSION["user"]["id"] = $user->getId();
-            $this->redirectTo(route('clients.list'));
+            $this->redirectTo(route('list.appointaments'));
         } else {
             FlashMessage::danger('Email e/ou senha inválidos!');
             $this->redirectTo(route('users.login'));

@@ -10,32 +10,13 @@ class AppointmentsPopulate
 {
     public static function populate()
     {
-        //$client = new Client(
-        //    name: 'ClienteAgendamento',
-        //    phone: '42988853477',
-        //    insurance_id: 2,
-        //    streetName: 'Rua teste',
-        //    numberHouse: 123,
-        //    city_id: 1
-        //);
-        //$client->save();
-
-        //$adminUser = new User(
-        //    name: 'AdminAgendamento',
-        //    email: 'admin@example.2com',
-        //    password: 'admin123',
-        //    password_confirmation: 'admin123',
-        //    city_id: 1
-        //);
-        //$adminUser->save();
-
-
+    
         for ($i=0; $i < 2; $i++) { 
             $test = new Appointment(
                 userID: 2,
                 date: new \DateTime("2024-06-15"),
                 startHour: new \DateTime("2024-06-15 13:00:00"),
-                periodHours: 4,
+                endHour: new \DateTime("2024-06-15 17:32:00"),
                 clientID: 1
             );
             $test->save();

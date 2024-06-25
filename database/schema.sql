@@ -42,8 +42,8 @@ CREATE TABLE clients (
     street_name VARCHAR(255) NOT NULL,
     number INT NOT NULL,
     city_id INT NOT NULL,
-    FOREIGN KEY (city_id) REFERENCES citys(id),
-    FOREIGN KEY (insurance_id) REFERENCES insurances(id)
+    FOREIGN KEY (city_id) REFERENCES citys(id) ON DELETE CASCADE,
+    FOREIGN KEY (insurance_id) REFERENCES insurances(id)ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS appointments;
@@ -55,8 +55,8 @@ CREATE TABLE appointments (
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     client_id INT NOT NULL,
-    FOREIGN KEY (psychologist_id) REFERENCES users(id),
-    FOREIGN KEY (client_id) REFERENCES clients(id)
+    FOREIGN KEY (psychologist_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS fixed_schedules;
@@ -67,7 +67,7 @@ CREATE TABLE fixed_schedules (
     day_of_week INT NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
-    FOREIGN KEY (psychologist_id) REFERENCES users(id)
+    FOREIGN KEY (psychologist_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
