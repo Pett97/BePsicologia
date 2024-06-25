@@ -146,12 +146,12 @@ abstract class Model
                 $values = ':' . implode(', :', static::$columns);
 
                 $sql = <<<SQL
-                    INSERT INTO {$table} ({$attributes}) VALUES ({$values});
-                SQL;
+                INSERT INTO {$table} ({$attributes}) VALUES ({$values});
+            SQL;
 
                 $stmt = $pdo->prepare($sql);
                 foreach (static::$columns as $column) {
-                    $stmt->bindValue($column, $this->$column);
+                    $stmt->bindValue(":{$column}", $this->$column);
                 }
 
                 $stmt->execute();
@@ -166,14 +166,14 @@ abstract class Model
                 $sets = implode(', ', $sets);
 
                 $sql = <<<SQL
-                    UPDATE {$table} set {$sets} WHERE id = :id;
-                SQL;
+                UPDATE {$table} set {$sets} WHERE id = :id;
+            SQL;
 
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(':id', $this->id);
 
                 foreach (static::$columns as $column) {
-                    $stmt->bindValue($column, $this->$column);
+                    $stmt->bindValue(":{$column}", $this->$column);
                 }
 
                 $stmt->execute();

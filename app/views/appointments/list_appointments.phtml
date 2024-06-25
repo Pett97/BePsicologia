@@ -11,7 +11,7 @@
                     <div class="card-content white-text">
                         <span class="card-title"><?="Agendamento " . $appointment->id ?></span>
                         <span class="white-text text-darken-2"><?= "Cliente:".$appointment->client_id  ?></span>
-                        <p><?= "Data: " . $appointment->date?></p>
+                        <p><?= "Data: " . (new DateTime($appointment->date))->format("d/m/Y")?></p>
                         <p><?= "Início: " . $appointment->start_time?></p>
                         <p><?= "Fim: " . $appointment->end_time?></p>
                         <p><?= "Responsável: " . $appointment->psychologist_id  ?></p>

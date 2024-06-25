@@ -26,25 +26,40 @@ class AppointmentsController extends Controller
 
     public function new(): void
     {
-        $problem = $this->current_user->appointments()->new();
+        $appointment = $this->current_user->appointments()->new();
 
         $title = 'Novo Agendamento';
-        $this->render('appointments/new', compact('appointment', 'title'));
+        $this->render('appointments/new_appointment', compact('appointment', 'title'));
     }
 
     public function create(Request $request): void
-    {
-        $params = $request->getParams();
-        $appointment = $this->current_user->appointments()->new($params['appointment']);
-
-        if ($appointment->save()) {
-            FlashMessage::success("Agendamento Salvo Com Sucesso");
-            $this->redirectTo(route("list.appointaments"));
+{
+    $params = $request->getParams();
+    
+    if (isset($params['appointment']['date'])) {
+        $date = \DateTime::createFromFormat('d/m/Y', $params['appointment']['date']);
+        if ($date) {
+            $params['appointment']['date'] = $date->format('Y-m-d');
         } else {
-            $title = "Novo Agendamento ";
+            FlashMessage::danger("Data inválida.");
+            $title = "Novo Agendamento";
+            $appointment = $this->current_user->appointments()->new();
             $this->render("appointments/new_appointment", compact("appointment", "title"));
+            return;
         }
     }
+
+    $appointment = $this->current_user->appointments()->new($params['appointment']);
+
+    if ($appointment->save()) {
+        FlashMessage::success("Agendamento Salvo Com Sucesso");
+        $this->redirectTo(route("list.appointaments"));
+    } else {
+        $title = "Novo Agendamento";
+        $this->render("appointments/new_appointment", compact("appointment", "title"));
+    }
+}
+
 
     public function show(Request $request): void
     {
@@ -61,37 +76,48 @@ class AppointmentsController extends Controller
 
     public function edit(Request $request): void
     {
+        $id = $request->getParam("id");
         $params = $request->getParams();
-        $appointment = $this->current_user->appointments()->findById($params['id']);
+        $appointment = $this->current_user->appointments()->findById((int)$id);
 
         $title = "Editar Agendamento #{$appointment->id}";
         $this->render('appointments/edit_appointment', compact('appointment', 'title'));
     }
 
     public function update(Request $request): void
-    {
-        $id = $request->getParam("id");
-        $params = $request->getParam('appointment');
-        dd($params);
-        $appointment = $this->current_user->appointments()->findById((int) $id);
+{
+    $id = $request->getParam("id");
+    $params = $request->getParam('appointment');
 
-        if ($appointment === null) {
-            FlashMessage::danger("Agendamento não encontrado.");
-            $this->redirectTo(route("list.appointments"));
-            return;
-        }
-
-        if ($appointment->save()) {
-            FlashMessage::success("Agendamento Atualizado Com Sucesso");
-            $this->redirectTo(route("list.appointments"));
-        } else {
-            FlashMessage::danger("Erro ao atualizar agendamento.");
-            $title = "Editar Agendamento ";
-            $this->render("appointments/edit_appointment", compact("appointment", "id"));
-        }
+    
+    $date = \DateTime::createFromFormat('d/m/Y', $params['new_date']);
+    if ($date) {
+        $params['date'] = $date->format('Y-m-d');
+    } else {
+        FlashMessage::danger("Data inválida.");
+        $title = "Editar Agendamento ";
+        $this->render("appointments/edit_appointment", compact("appointment", "id"));
+        return;
     }
 
+    $appointment = $this->current_user->appointments()->findById($id);
 
+    
+    $appointment->psychologist_id = $params['psychologist_id'];
+    $appointment->date = $params['date'];
+    $appointment->start_time = $params['start_time'];
+    $appointment->end_time = $params['end_time'];
+    $appointment->client_id = $params['client_id'];
+
+    if ($appointment->save()) {
+        FlashMessage::success("Agendamento Atualizado Com Sucesso");
+        $this->redirectTo(route("list.appointaments"));
+    } else {
+        FlashMessage::danger("Erro ao atualizar agendamento.");
+        $title = "Editar Agendamento ";
+        $this->render("appointments/edit_appointment", compact("appointment", "id"));
+    }
+}
     public function delete(Request $request): void
     {
         $params = $request->getParams();

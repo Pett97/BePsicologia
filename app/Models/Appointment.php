@@ -23,11 +23,8 @@ class Appointment extends Model
 
     public function validates(): void
     {
-        Validations::notEmpty('title', $this);
+        Validations::notEmpty('psychologist_id', $this);
     }
 
-    public function isSupportedByUser(User $user): bool
-    {
-        return AppointmentUserReinforce::exists(['appointment_id' => $this->id, 'user_id' => $user->id]);
-    }
+    
 }

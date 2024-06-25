@@ -8,27 +8,31 @@ class UsersPopulate
 {
     public static function populate()
     {
-        
         $adminUser = new User(
-            name: 'Admin',
-            email: 'admin@example.com',
-            password: 'admin123',
-            password_confirmation: 'admin123',
-            city_id: 1   
+            [
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => 'admin123',
+                'password_confirmation' => 'admin123',
+                'city_id' => 1
+            ]
         );
-        $adminUser->save();
 
-        
-        $numberOfUsers = 4;
+        $user = new User($adminUser);
+        $user->save();
 
-        for ($i = 1; $i <= $numberOfUsers; $i++) {
-            $user = new User(
-                name: 'Fulano ' . $i,
-                email: 'fulano' . $i . '@example.com',
-                password: '123456',
-                password_confirmation: '123456',
-                city_id: 2   
-            );
+        $numberOfUsers = 10;
+
+        for ($i = 1; $i < $numberOfUsers; $i++) {
+            $data =  [
+                'name' => 'Fulano ' . $i,
+                'email' => 'fulano' . $i . '@example.com',
+                'password' => '123456',
+                'password_confirmation' => '123456',
+                'city_id' => 1
+            ];
+
+            $user = new User($data);
             $user->save();
         }
 
