@@ -13,7 +13,7 @@ Database::migrate();
 //sempre popular as tabelas que não precisam ter relaçao antes 
 SupplyPopulate::populate();
 UsersPopulate::populate();
-//ClientsPopulate::populate();
+ClientsPopulate::populate();
 //AppointmentsPopulate::populate();
 //FixedSchedulePopulate::populate();
  
