@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\AppointmentUserReinforce;
 use App\Models\Appointment;
 use Core\Http\Controllers\Controller;
@@ -18,6 +19,4 @@ class ReinforceAppointmentsController extends Controller
 
         $this->render('appointments/list_appointments', compact('paginator', 'appointments', 'title'));
     }
-
-    
 }

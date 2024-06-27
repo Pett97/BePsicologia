@@ -11,7 +11,7 @@ use Core\Database\ActiveRecord\Model;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $password
+ * @property string $encrypted_password
  * @property Appointment[] $appointments
  * @property Appointment[] $reinforced_appointments
  */
@@ -30,7 +30,12 @@ class User extends Model
 
     public function reinforcedAppointments(): BelongsToMany
     {
-        return $this->belongsToMany(Appointment::class, 'appointment_user__reinforce', 'psychologist_id', 'appointment_id');
+        return $this->belongsToMany(
+            Appointment::class,
+            'appointment_user__reinforce',
+            'psychologist_id',
+            'appointment_id'
+        );
     }
 
     public function validates(): void

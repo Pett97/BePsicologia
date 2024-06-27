@@ -5,15 +5,11 @@ namespace App\Controllers;
 use App\Models\FixedSchedule;
 use Core\Http\Request;
 use Lib\FlashMessage;
-
 use Core\Http\Controllers\Controller;
 use DateTime;
 
-
 class FixedsSchedulesController extends Controller
 {
-
-
     public function index(Request $request): void
     {
         $page = $request->getParam('page', 1);

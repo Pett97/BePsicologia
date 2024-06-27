@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Core\Database\ActiveRecord\BelongsTo;
@@ -25,6 +26,4 @@ class Appointment extends Model
     {
         Validations::notEmpty('psychologist_id', $this);
     }
-
-    
 }

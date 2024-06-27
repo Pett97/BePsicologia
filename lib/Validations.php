@@ -17,7 +17,7 @@ class Validations
     }
 
     public static function passwordConfirmation($obj)
-    {   
+    {
         if ($obj->password !== $obj->password_confirmation) {
             $obj->addError('password', 'as senhas devem ser idênticas!');
             echo "   ValiDations as senhas devem ser idênticas!/n";

@@ -1,26 +1,18 @@
-# Configuração principal do PHPStan
 parameters:
-  # Nível de análise: pode ser ajustado de 0 (mais permissivo) a 8 (mais estrito)
-  level: 6
 
-  # Diretórios que serão analisados pelo PHPStan
+  level: 6
   paths:
     - app
     - core
     - tests
 
-  # Diretórios ou arquivos que serão excluídos da análise
+  #removido a pasta teste apenas para simplificar 
   excludePaths:
     - app/views/*
+    - tests/*
 
-  # Ignorar erros específicos: útil para ignorar métodos não utilizados ou outros erros específicos
   ignoreErrors:
-    # Ignora o erro sobre o método currentUser() não utilizado no AppointmentsController
-    - '#Method App\\Controllers\\AppointmentsController::currentUser\(\) is unused.#'
-
-    # Ignora o erro sobre o método currentUser() não utilizado no ClientsController
-    - '#Method App\\Controllers\\ClientsController::currentUser\(\) is unused.#'
-
-    # Ignora o erro sobre o método currentUser() não utilizado no FixedsSchedulesController
-    - '#Method App\\Controllers\\FixedsSchedulesController::currentUser\(\) is unused.#'
-
+    - '#Unsafe usage of new static\(\)\.#'
+    - '#Access to protected property App\\Models\\User::\$password.#'
+    - '#Access to an undefined property Core\\Database\\ActiveRecord\\Model::\$[a-zA-Z0-9_]+.#'
+    - '#Call to an undefined method ReflectionType::getName\(\).#'

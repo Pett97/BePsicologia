@@ -10,10 +10,8 @@ use Lib\FlashMessage;
 
 class AuthenticationsController extends Controller
 {
-
-
     public function new(): void
-    {   
+    {
         $this->render('authentications/new');
     }
 
@@ -39,6 +37,4 @@ class AuthenticationsController extends Controller
         FlashMessage::success('Logout realizado com sucesso!');
         $this->redirectTo(route('users.login'));
     }
-
-
 }
