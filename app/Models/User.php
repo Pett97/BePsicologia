@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Core\Database\ActiveRecord\BelongsToMany;
@@ -10,14 +11,14 @@ use Core\Database\ActiveRecord\Model;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $encrypted_password
+ * @property string $password
  * @property Appointment[] $appointments
  * @property Appointment[] $reinforced_appointments
  */
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $columns = ['name', 'email', 'password','city_id'];
+    protected static array $columns = ['name', 'email', 'encrypted_password', 'city_id'];
 
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
@@ -29,14 +30,13 @@ class User extends Model
 
     public function reinforcedAppointments(): BelongsToMany
     {
-        return $this->belongsToMany(Appointment::class, 'problem_user_reinforce', 'psychologist_id', 'appointment_id');
+        return $this->belongsToMany(Appointment::class, 'appointment_user__reinforce', 'psychologist_id', 'appointment_id');
     }
 
     public function validates(): void
     {
-        Validations::notEmpty('name', $this);
         Validations::notEmpty('email', $this);
-
+        Validations::notEmpty('password', $this);
         Validations::uniqueness('email', $this);
 
         if ($this->newRecord()) {
@@ -46,11 +46,11 @@ class User extends Model
 
     public function authenticate(string $password): bool
     {
-        if ($this->password == null) {
+        if ($this->encrypted_password == null) {
             return false;
         }
 
-        return password_verify($password, $this->password);
+        return password_verify($password, $this->encrypted_password);
     }
 
     public static function findByEmail(string $email): User|null
@@ -67,9 +67,7 @@ class User extends Model
             $this->newRecord() &&
             $value !== null && $value !== ''
         ) {
-            $this->password = password_hash($value, PASSWORD_DEFAULT);
+            $this->encrypted_password = password_hash($value, PASSWORD_DEFAULT);
         }
     }
-
-    
 }

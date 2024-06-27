@@ -137,11 +137,12 @@ abstract class Model
 
     /* ------------------- DATABASE METHODS ------------------- */
     public function save(): bool
-    {
+    {   
         if ($this->isValid()) {
             $pdo = Database::getDatabaseConn();
             if ($this->newRecord()) {
                 $table = static::$table;
+                
                 $attributes = implode(', ', static::$columns);
                 $values = ':' . implode(', :', static::$columns);
 
@@ -180,6 +181,7 @@ abstract class Model
             }
             return true;
         }
+        
         return false;
     }
 
