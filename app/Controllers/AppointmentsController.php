@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Appointment;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use Core\Http\Controllers\Controller;
@@ -33,20 +34,15 @@ class AppointmentsController extends Controller
     public function create(Request $request): void
     {
         $params = $request->getParams();
-
-        if (isset($params['appointment']['date'])) {
-            $date = \DateTime::createFromFormat('d/m/Y', $params['appointment']['date']);
-            if ($date) {
-                $params['appointment']['date'] = $date->format('Y-m-d');
-            } else {
-                FlashMessage::danger("Data inválida.");
-                $title = "Novo Agendamento";
-                $appointment = $this->current_user->appointments()->new();
-                $this->render("appointments/new_appointment", compact("appointment", "title"));
-                return;
-            }
-        }
-
+        //dd($params);
+        $testAppointament = [
+            'psychologist_id' => $params["appointment"]["psychologist_id"],
+            'date' => $params["appointment"]["date"],
+            'start_time' => $params["appointment"]["start_time"],
+            'end_time' => $params["appointment"]["end_time"],
+            'client_id' => $params["appointment"]["client_id"]
+        ];
+        $appointment = new Appointment($testAppointament);
         $appointment = $this->current_user->appointments()->new($params['appointment']);
 
         if ($appointment->save()) {

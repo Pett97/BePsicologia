@@ -14,6 +14,6 @@ Database::migrate();
 SupplyPopulate::populate();
 UsersPopulate::populate();
 ClientsPopulate::populate();
-//AppointmentsPopulate::populate();
-//FixedSchedulePopulate::populate();
+AppointmentsPopulate::populate();
+FixedSchedulePopulate::populate();
  

@@ -20,6 +20,6 @@ class SupplyPopulate
             $insurance->save();
         }
 
-        echo "SupplyPopulate Populate With $SupllyPopulate";
+        echo "SupplyPopulate Populate With $SupllyPopulate"."\n";
     }
 }

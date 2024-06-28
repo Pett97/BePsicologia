@@ -16,19 +16,19 @@
     <?php foreach ($fixedSchedules as $fS) : ?>
       <tbody>
         <tr>
-          <td><?= $fS->getUserID() ?></td>
-          <td><?= $fS->getDayOfWeek() ?></td>
-          <td><?= $fS->getStartTime()->format('H:i:s') ?></td>
-          <td><?= $fS->getEndTime()->format('H:i:s') ?></td>
+          <td><?= $fS->id ?></td>
+          <td><?= $fS->day_of_week ?></td>
+          <td><?= $fS->start_time ?></td>
+          <td><?= $fS->end_time ?></td>
           <td>
             <div class="left">
-              <a href="<?= route("schedule.edit", ["id" => $fS->getID()]) ?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+              <a href="<?= route("schedule.edit", ["id" => $fS->id]) ?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
 
 
             </div>
-            <form action="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>" method="POST">
+            <form action="<?= route("schedule.destroy", ["id" => $fS->id]) ?>" method="POST">
               <input type="hidden" name="_method" value="DELETE">
-              <input type="hidden" name="id_delete" value="<?= route("schedule.destroy", ["id" => $fS->getId()]) ?>">
+              <input type="hidden" name="id_delete" value="<?= route("schedule.destroy", ["id" => $fS->id]) ?>">
               <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
             </form>
           </td>

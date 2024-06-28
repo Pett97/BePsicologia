@@ -39,12 +39,14 @@ class FixedsSchedulesController extends Controller
     {
         $params = $request->getParams();
 
-        $fixedSchedule = new FixedSchedule(
-            userID: $params["psicoID"],
-            dayOFWeek: $params["dayOFWeek"],
-            startTime: new \DateTime($params["startTime"]),
-            endTime: new \DateTime($params["endTime"])
-        );
+        $fixedScheduleData = [
+            'psychologist_id'=>$params["psicoID"],
+            'day_of_week'=>$params["dayOFWeek"],
+            'start_time'=>$params["startTime"],
+            'end_time'=>$params["endTime"]
+        ];
+
+        $fixedSchedule = new FixedSchedule($fixedScheduleData);
 
         if ($fixedSchedule->save()) {
             FlashMessage::success("Horário Salvo Com Sucesso");
@@ -61,7 +63,7 @@ class FixedsSchedulesController extends Controller
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
 
         if ($fixedSchedule !== null) {
-            $title = "Horário Usuário:" . $fixedSchedule->getUserID();
+            $title = "Horário Usuário:" . $fixedSchedule->id;
             $this->render("fixeds_schedules/detail_schedule", compact("fixedSchedule", "title"));
         } else {
             $this->redirectTo(route("client.list"));
@@ -74,25 +76,27 @@ class FixedsSchedulesController extends Controller
     {
         $params = $request->getParams();
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
-        $title = "Editar:  {$fixedSchedule->getID()}";
+        $title = "Editar:  {$fixedSchedule->id}";
         $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "title"));
     }
 
     public function update(Request $request): void
     {
         $params = $request->getParams();
+        //dd($params);
 
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
-        $newDayOFWeek = $params["newDayOFWeek"];
-        $newDateStart = $params["newDateStart"];
-        $newEndStart = $params["newDateEnd"];
-        $fixedSchedule->setDayOFWeek($newDayOFWeek);
-        $fixedSchedule->setStartTime(new DateTime($newDateStart));
-        $fixedSchedule->setEndTime(new DateTime($newEndStart));
 
-        $fixedSchedule->save();
-        FlashMessage::success("Horário Atualizado Com Sucesso");
-        $this->redirectTo(route("schedules.list"));
+        $fixedSchedule->psychologist_id = $params["userID"];
+        $fixedSchedule->day_of_week = (int)$params["newDayOFWeek"];
+        $fixedSchedule->start_time = $params["newStartTime"];
+        $fixedSchedule->end_time = $params["newEndTime"];
+
+        
+        if($fixedSchedule->save()){
+            FlashMessage::success("Horário Atualizado Com Sucesso");
+            $this->redirectTo(route("schedules.list"));
+        }
 
         $title = "Editar Horário ";
         $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "title"));

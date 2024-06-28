@@ -32,39 +32,27 @@ class ClientsController extends Controller
     }
 
     public function create(Request $request): void
-{
-    $params = $request->getParam("client");
+    {
+        $params = $request->getParams();
+        //dd($params);
 
-    if (!isset($params)) {
-        FlashMessage::danger("Parâmetros do cliente não encontrados.");
-        $this->redirectTo(route("new.client"));
-        return;
+        $newClient = [
+            'name' => $params["client_name"],
+            'phone' => $params["client_phone"],
+            'insurance_id' => $params["client_insurance"],
+            'street_name' => $params["client_street"],
+            'number' => $params["number_house"],
+            'city_id' => $params["city_id"],
+        ];
+
+        $client = new Client($newClient);
+        if ($client->save()) {
+            FlashMessage::danger("Cliente Salvo!");
+            $this->redirectTo(route("clients.list"));
+        } else {
+            $this->render("clients/new_client", compact("client", "title"));
+        }
     }
-
-    if (!isset($params["client_name"])) {
-        FlashMessage::danger("Nome do cliente não encontrado.");
-        $this->redirectTo(route("new.client"));
-        return;
-    }
-
-
-    $client = new Client(
-        $name = $params["client_name"],
-        $phone = $params["client_phone"],
-        $insurance_id = $params["client_insurance"],
-        $streetName = $params["client_street"],
-        $numberHouse = $params["number_house"],
-        $city_id = $params["city_id"]
-    );
-
-    if ($client->save()) {
-        FlashMessage::success("Cliente Salvo Com Sucesso");
-        $this->redirectTo(route("clients.list"));
-    } else {
-        $title = "Novo Cliente";
-        $this->render("clients/new_client", compact("client", "title"));
-    }
-}
 
     public function show(Request $request): void
     {
