@@ -8,7 +8,7 @@ use Lib\Validations;
 class FixedSchedule extends Model
 {
     protected static string $table = "fixed_schedules";
-    protected static array $columns =["psychologist_id","day_of_week","start_time","end_time"];
+    protected static array $columns = ["psychologist_id","day_of_week","start_time","end_time"];
 
     public function validates(): void
     {
@@ -18,4 +18,3 @@ class FixedSchedule extends Model
         Validations::notEmpty('end_time', $this);
     }
 }
-    

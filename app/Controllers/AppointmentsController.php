@@ -81,44 +81,23 @@ class AppointmentsController extends Controller
     public function update(Request $request): void
     {
         $id = $request->getParam("id");
-        $params = $request->getParam('appointment');
+        $params = $request->getParam("appointment");
 
-        $date = \DateTime::createFromFormat('d/m/Y', $params['new_date']);
-        if (!$date) {
-            FlashMessage::danger("Data inválida.");
-            $this->renderEditForm("Editar Agendamento", $id, $params);
-            return;
-        }
 
-        $params['date'] = $date->format('Y-m-d');
         $appointment = $this->current_user->appointments()->findById($id);
-
-        $this->updateAppointment($appointment, $params);
-
-        if ($appointment->save()) {
-            FlashMessage::success("Agendamento Atualizado Com Sucesso");
-            $this->redirectTo(route("list.appointaments"));
-        } else {
-            FlashMessage::danger("Erro ao atualizar agendamento.");
-            $this->renderEditForm("Editar Agendamento", $id, $params, $appointment);
-        }
-    }
-    /** 
-     * @property Appointment $appointment
-     * @param array $params
-     */
-    private function updateAppointment($appointment, $params): void
-    {
         $appointment->psychologist_id = $params['psychologist_id'];
-        $appointment->date = $params['date'];
+        $date = \DateTime::createFromFormat('d/m/Y', $params['new_date']);
+        $appointment->date = $date->format('Y-m-d');
         $appointment->start_time = $params['start_time'];
         $appointment->end_time = $params['end_time'];
         $appointment->client_id = $params['client_id'];
-    }
 
-    private function renderEditForm($title, $id, $params, $appointment = null): void
-    {
-        $this->render("appointments/edit_appointment", compact("title", "id", "params", "appointment"));
+        if ($appointment->save()) {
+            FlashMessage::success("Agendamento Atualizado");
+            $this->redirectTo(route("list.appointaments"));
+        } else {
+            FlashMessage::danger("Erro ao atualizar agendamento.");
+        }
     }
 
 

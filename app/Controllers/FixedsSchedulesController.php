@@ -40,10 +40,10 @@ class FixedsSchedulesController extends Controller
         $params = $request->getParams();
 
         $fixedScheduleData = [
-            'psychologist_id'=>$params["psicoID"],
-            'day_of_week'=>$params["dayOFWeek"],
-            'start_time'=>$params["startTime"],
-            'end_time'=>$params["endTime"]
+            'psychologist_id' => $params["psicoID"],
+            'day_of_week' => $params["dayOFWeek"],
+            'start_time' => $params["startTime"],
+            'end_time' => $params["endTime"]
         ];
 
         $fixedSchedule = new FixedSchedule($fixedScheduleData);
@@ -92,8 +92,8 @@ class FixedsSchedulesController extends Controller
         $fixedSchedule->start_time = $params["newStartTime"];
         $fixedSchedule->end_time = $params["newEndTime"];
 
-        
-        if($fixedSchedule->save()){
+
+        if ($fixedSchedule->save()) {
             FlashMessage::success("Horário Atualizado Com Sucesso");
             $this->redirectTo(route("schedules.list"));
         }

@@ -83,8 +83,9 @@ class ClientsController extends Controller
 
     public function update(Request $request): void
     {
-        $params = $request->getParams("client");
-        $client = Client::findByID($params["id"]);
+        $id = $request->getParam("id");
+        $params = $request->getParam("client");
+        $client = Client::findById($id);
 
         if ($client === null) {
             FlashMessage::danger("Cliente não encontrado.");
@@ -92,12 +93,12 @@ class ClientsController extends Controller
             return;
         }
 
-        $client->name = $params["client"]["new_client_name"];
-        $client->phone = $params["client"]["new_client_phone"];
-        $client->insurance_id = $params["client"]["new_client_insurance"];
-        $client->street_name = $params["client"]["new_client_street"];
-        $client->number = $params["client"]["new_client_number_house"];
-        $client->city_id = $params["client"]["new_client_city_id"];
+        $client->name = $params["new_client_name"];
+        $client->phone = $params["new_client_phone"];
+        $client->insurance_id = $params["new_client_insurance"];
+        $client->street_name = $params["new_client_street"];
+        $client->number = $params["new_client_number_house"];
+        $client->city_id = $params["new_client_city_id"];
 
         if ($client->save()) {
             FlashMessage::success("Cliente Atualizado Com Sucesso");

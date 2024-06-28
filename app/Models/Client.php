@@ -7,7 +7,6 @@ use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 
 class Client extends Model
-
 {
     protected static string $table = "clients";
     protected static array $columns = ['name', 'phone', 'insurance_id', 'street_name', 'number', 'city_id'];
