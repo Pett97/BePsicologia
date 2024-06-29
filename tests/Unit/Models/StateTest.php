@@ -3,24 +3,32 @@
 namespace Tests\Unit\Models;
 
 use App\Models\State;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class StateTest extends TestCase
 {
-    public function test_can_set_name(): void
-    {
-        $state = new State(
-            name:"California"
-        );
+    private State $state;
 
-        $this->assertEquals("CALIFORNIA", $state->getName());
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->state = new State([
+            'name' => 'Parana'
+        ]);
+        $this->state->save();
     }
 
-    public function test_dont_create_withOut_name(): void
+    public function test_should_create_new_state(): void
     {
-        $state = new State(name:'');
+        $this->assertTrue($this->state->save());
+        $this->assertCount(1, State::all());
+    }
 
-        $hasErrors = $state->hasErrors();
-        $this->assertFalse($hasErrors);
+    public function test_all_should_return_all_states(): void
+    {
+        $states[] = $this->state;
+        $all = State::all();
+        $this->assertCount(1, $all);
+        $this->assertEquals($states, $all);
     }
 }

@@ -11,15 +11,25 @@ class SupplyPopulate
     public static function populate(): void
     {
         $SupllyPopulate = 7;
-        for ($i = 1; $i < $SupllyPopulate; $i++) {
-            $state = new State(name: "Estado" . $i);
+        for ($i = 1; $i <= $SupllyPopulate; $i++) {
+            $dataState = [
+                'name' => "Estado" . $i
+            ];
+            $dataCity = [
+                'name' => "Cidade" . $i,
+                'state_id' => $i
+            ];
+            $dataInsurance = [
+                'name' => "Convencio" . $i
+            ];
+            $state = new State($dataState);
             $state->save();
-            $city = new City(idState: $i, name: "Cidade" . $i);
+            $city = new City($dataCity);
             $city->save();
-            $insurance = new Insurance(name: "Convenio" . $i);
-            $insurance->save();
+            $insurnace = new Insurance($dataInsurance);
+            $insurnace->save();
         }
 
-        echo "SupplyPopulate Populate With $SupllyPopulate"."\n";
+        echo "SupplyPopulate Populate With $SupllyPopulate" . "\n";
     }
 }
