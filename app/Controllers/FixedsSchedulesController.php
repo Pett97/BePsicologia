@@ -87,10 +87,7 @@ class FixedsSchedulesController extends Controller
 
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
 
-        $fixedSchedule->psychologist_id = $params["userID"];
-        $fixedSchedule->day_of_week = (int)$params["newDayOFWeek"];
-        $fixedSchedule->start_time = $params["newStartTime"];
-        $fixedSchedule->end_time = $params["newEndTime"];
+        $fixedSchedule->fill($params["fixedSchedule"]);
 
 
         if ($fixedSchedule->save()) {

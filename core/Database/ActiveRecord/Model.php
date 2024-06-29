@@ -213,6 +213,20 @@ abstract class Model
         return ($stmt->rowCount() !== 0);
     }
 
+
+    public function fill(array $attributes): void
+    {
+        foreach ($attributes as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            } elseif (array_key_exists($key, $this->attributes)) {
+                $this->attributes[$key] = $value;
+            } else {
+                throw new \Exception("Property {$key} not found in " . static::class);
+            }
+        }
+    }
+
     public function destroy(): bool
     {
         $table = static::$table;

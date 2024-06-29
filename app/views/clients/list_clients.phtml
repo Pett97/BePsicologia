@@ -8,7 +8,7 @@
     <ul class="collection">
        <li class="collection-item"><?=$client->id.":". $client->name?> </li>
         <div class="right">
-          <form action="<?= route("client.destroy",["id"=>$client->name])?>" method="POST">
+          <form action="<?= route("client.destroy",["id"=>$client->id])?>" method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="id_delete" value="<?= route("client.destroy",["id"=>$client->id])?>">
             <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>

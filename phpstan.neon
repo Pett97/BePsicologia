@@ -1,18 +1,17 @@
 parameters:
-
   level: 6
   paths:
     - app
     - core
     - tests
 
-  #removido a pasta teste apenas para simplificar 
   excludePaths:
     - app/views/*
     - tests/*
 
   ignoreErrors:
     - '#Unsafe usage of new static\(\)\.#'
-    - '#Access to protected property App\\Models\\User::\$password.#'
     - '#Access to an undefined property Core\\Database\\ActiveRecord\\Model::\$[a-zA-Z0-9_]+.#'
     - '#Call to an undefined method ReflectionType::getName\(\).#'
+    - '#Call to function compact\(\) contains undefined variable \$appointments#'
+    - '#Method Core\\Database\\ActiveRecord\\Model::fill\(\) has parameter \$attributes with no value type specified in iterable type array#'

@@ -2,11 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Models\AppointmentUserReinforce;
 use App\Models\Appointment;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
-use Lib\FlashMessage;
 
 class ReinforceAppointmentsController extends Controller
 {
