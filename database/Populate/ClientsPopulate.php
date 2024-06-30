@@ -8,32 +8,21 @@ class ClientsPopulate
 {
     public static function populate()
     {
-        
-        $client = new Client(
-            name: 'ClientTeste',
-            phone: '42988853477',
-            insurance_id: 2,
-            streetName: 'Rua teste',
-            numberHouse: 123,
-            city_id: 1   
-        );
+        $numberOFClients = 15;
+        for ($i = 0; $i <= $numberOFClients; $i++) {
+            $testeClient = [
+                'name' => "Cliente" . $i,
+                'phone' => "022345678",
+                'insurance_id' => 1,
+                'street_name' => "nova brasilia",
+                'number' => 285,
+                'city_id' => 1
+            ];
 
-        $client->save();
-        
-        $numberOfClients = 2;
-
-        for ($i = 1; $i <= $numberOfClients; $i++) {
-            $client = new Client(
-                name: 'TestCliente'.$i,
-                phone: '42988853477',
-                insurance_id: 1,
-                streetName: 'Rua teste'.$i,
-                numberHouse: 1,
-                city_id: 2   
-            );
+            $client = new Client($testeClient);
             $client->save();
         }
 
-        echo "Clients populated with $numberOfClients registers\n";
+        echo " Clients Populate With " . $numberOFClients . "\n";
     }
 }

@@ -16,3 +16,4 @@ UsersPopulate::populate();
 ClientsPopulate::populate();
 AppointmentsPopulate::populate();
 FixedSchedulePopulate::populate();
+ 

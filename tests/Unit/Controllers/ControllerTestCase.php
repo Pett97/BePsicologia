@@ -13,7 +13,7 @@ abstract class ControllerTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        require Constants::rootPath()->join('../../config/routes.php');
+        require Constants::rootPath()->join('config/routes.php');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/';

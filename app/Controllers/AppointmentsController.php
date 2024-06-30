@@ -5,95 +5,64 @@ namespace App\Controllers;
 use App\Models\Appointment;
 use Core\Http\Request;
 use Lib\FlashMessage;
-use App\Models\User;
-use DateTime;
-use Lib\Authentication\Auth;
+use Core\Http\Controllers\Controller;
 
-class AppointmentsController
+class AppointmentsController extends Controller
 {
-    private string $layout = "application";
-    private ?User $currentUser = null;
-
-
-    private function currentUser(): ?User
-    {
-        if ($this->currentUser === null) {
-            $this->currentUser = Auth::user();
-        }
-        return $this->currentUser;
-    }
-
-
-    //public function authenticated(): void
-    //{
-    //    if (!Auth::check()) {
-    //        FlashMessage::danger("erro");
-    //        $this->redirectTo("/login");
-    //    }
-    //}
-
     public function index(Request $request): void
     {
-        $page = $request->getParam('page', 1);
-        $itemsPerPage = $request->getParam('items_per_page', 5);
-        $paginator = Appointment::paginate($page, $itemsPerPage);
+        $paginator = $this->current_user->appointments()->paginate(page: $request->getParam('page', 1));
         $appointments = $paginator->registers();
 
-        //dd($clients);
-        $title = "Agendamentos";
+        $title = 'Agendamentos Registrados';
 
         if ($request->acceptJson()) {
-            $this->renderJson('index', compact("paginator", 'appointments', 'title'));
+            $this->renderJson('appointments/list_appointments', compact('paginator', 'appointments', 'title'));
         } else {
-            $this->render('list_appointments', compact("paginator", 'appointments', 'title'));
+            $this->render('appointments/list_appointments', compact('paginator', 'appointments', 'title'));
         }
     }
 
     public function new(): void
     {
-        $title = "Novo Agendamento";
-        $appointment = new Appointment();
-        $this->render("new_appointment", compact("appointment", "title"));
-        $view = "/var/www/app/views/appointments/.phtml";
+        $appointment = $this->current_user->appointments()->new();
+
+        $title = 'Novo Agendamento';
+        $this->render('appointments/new_appointment', compact('appointment', 'title'));
     }
 
     public function create(Request $request): void
     {
         $params = $request->getParams();
-
-        $userID = intval($params["userID"]);
-        $clientID = intval($params["clientID"]);
-        $date = DateTime::createFromFormat('d/m/Y', $params["date"]);
-        $startHour = DateTime::createFromFormat('H:i:s', $params["startHour"]);
-        $hours = intval($params["hours"]);
-
-
-
-        $appointment = new Appointment(
-            userID: $userID,
-            date: $date,
-            startHour: $startHour,
-            periodHours: $hours,
-            clientID: $clientID
-        );
+        //dd($params);
+        $testAppointament = [
+            'psychologist_id' => $params["appointment"]["psychologist_id"],
+            'date' => $params["appointment"]["date"],
+            'start_time' => $params["appointment"]["start_time"],
+            'end_time' => $params["appointment"]["end_time"],
+            'client_id' => $params["appointment"]["client_id"]
+        ];
+        $appointment = new Appointment($testAppointament);
+        $appointment = $this->current_user->appointments()->new($params['appointment']);
 
         if ($appointment->save()) {
             FlashMessage::success("Agendamento Salvo Com Sucesso");
             $this->redirectTo(route("list.appointaments"));
         } else {
-            $title = "Novo Agendamento ";
-            $this->render("new_appointment", compact("appointment", "title"));
+            $title = "Novo Agendamento";
+            $this->render("appointments/new_appointment", compact("appointment", "title"));
         }
     }
 
+
     public function show(Request $request): void
     {
-        $params = $request->getParams();
-        $appointment = Appointment::findByID($params["id"]);
+        $id = $request->getParam("id");
+        $appointment = $this->current_user->appointments()->findById((int)$id);
 
         if ($appointment !== null) {
-            $title = "Agendamento: " . $appointment->getID();
-            $this->render("appointment_detail", compact("appointment", "title"));
+            $title = "Agendamento: " . $appointment->id;
+            $this->render("appointments/appointment_detail", compact("appointment", "title"));
         } else {
             $this->redirectTo(route("list.appointaments"));
         }
@@ -101,81 +70,45 @@ class AppointmentsController
 
     public function edit(Request $request): void
     {
+        $id = $request->getParam("id");
         $params = $request->getParams();
-        $appointment = Appointment::findByID($params["id"]);
-        $title = "Editar Agendamento " . $appointment->getID() . "}";
-        $this->render("edit_appointment", compact("appointment", "title"));
+        $appointment = $this->current_user->appointments()->findById((int)$id);
+
+        $title = "Editar Agendamento #{$appointment->id}";
+        $this->render('appointments/edit_appointment', compact('appointment', 'title'));
     }
 
     public function update(Request $request): void
     {
-        $params = $request->getParams();
-
-        $appointment = Appointment::findByID($params["id"]);
-        $userID = $params["newUserID"];
-        $date = DateTime::createFromFormat('d/m/Y', $params["newDate"]);
-        $startHour = DateTime::createFromFormat('H:i:s', $params["newStartHour"]);
-        $endHour = DateTime::createFromFormat('H:i:s', $params["newEndHours"]);
-        $interval = $startHour->diff($endHour);
-        $hours = $interval->h;
-        $clientID = $params["newClientID"];
+        $id = $request->getParam("id");
+        $params = $request->getParam("appointment");
 
 
-        $appointment->setUserID($userID);
-        $appointment->setDate($date);
-        $appointment->setStartHour($startHour);
-        $appointment->setPeriodHours($hours);
-        $appointment->setClientID($clientID);
+        $appointment = $this->current_user->appointments()->findById($id);
+        $appointment->psychologist_id = $params['psychologist_id'];
+        $date = \DateTime::createFromFormat('d/m/Y', $params['new_date']);
+        $appointment->date = $date->format('Y-m-d');
+        $appointment->start_time = $params['start_time'];
+        $appointment->end_time = $params['end_time'];
+        $appointment->client_id = $params['client_id'];
 
-        $appointment->save();
-        FlashMessage::success("Agendamento Atualizado Com Sucesso");
-        $this->redirectTo(route("list.appointaments"));
-
-        $title = "Editar Agentamento ";
-        $this->render("edit_appointment", compact("appointment", "title"));
+        if ($appointment->save()) {
+            FlashMessage::success("Agendamento Atualizado");
+            $this->redirectTo(route("list.appointaments"));
+        } else {
+            FlashMessage::danger("Erro ao atualizar agendamento.");
+        }
     }
+
 
     public function delete(Request $request): void
     {
         $params = $request->getParams();
-        $appointment = Appointment::findByID($params["id"]);
+
+        $appointment = $this->current_user->appointments()->findById($params['id']);
         $appointment->destroy();
-        FlashMessage::success("Agendamento Removido Com Sucesso");
-        $this->redirectTo(route("list.appointaments"));
-    }
 
-
-    private function redirectTo(string $path): void
-    {
-        header("Location:" . $path);
-        exit;
+        FlashMessage::success('Agendamento removido com sucesso!');
+        $this->redirectTo(route('list.appointaments'));
     }
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function render(string $view, array $data = []): void
-    {
-        extract($data);
-        $view = "/var/www/app/views/appointments/" . $view . ".phtml";
-        require "/var/www/app/views/layouts/" . $this->layout . ".phtml";
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function renderJSON(string $view, array $data = []): void
-    {
-        extract($data);
-        $view = "/var/www/app/views/appointments/" . $view . "json.php";
-        $json = [];
-        include "/var/www/app/views/appointments/appointment.json.php";
-        header("Content-Type: application/json; charset=utf-8");
-        echo json_encode($json);
-        return;
-    }
-
-    //private function isJsonRequest(): bool
-    //{
-    //  return (isset($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] === ///'application/json');
-    // }
 }

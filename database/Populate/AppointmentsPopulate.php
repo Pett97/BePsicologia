@@ -2,45 +2,30 @@
 
 namespace Database\Populate;
 
-use App\Models\Client;
+
 use App\Models\Appointment;
-use App\Models\User; 
+
+use DateTime;
 
 class AppointmentsPopulate
 {
     public static function populate()
     {
-        //$client = new Client(
-        //    name: 'ClienteAgendamento',
-        //    phone: '42988853477',
-        //    insurance_id: 2,
-        //    streetName: 'Rua teste',
-        //    numberHouse: 123,
-        //    city_id: 1
-        //);
-        //$client->save();
-
-        //$adminUser = new User(
-        //    name: 'AdminAgendamento',
-        //    email: 'admin@example.2com',
-        //    password: 'admin123',
-        //    password_confirmation: 'admin123',
-        //    city_id: 1
-        //);
-        //$adminUser->save();
+        $numberOFAppointments = 7;
+        for ($i = 1; $i < $numberOFAppointments; $i++) {
+            $testAppointament = [
+                'psychologist_id' => $i,
+                'date' => "1997-04-04",
+                'start_time' => "2024-04-04 13:00:".$i,
+                'end_time' => "2024-04-04 14:00:31",
+                'client_id' => $i
+            ];
+            $appointment = new Appointment($testAppointament);
+            $appointment->save();
+        };
 
 
-        for ($i=0; $i < 2; $i++) { 
-            $test = new Appointment(
-                userID: 2,
-                date: new \DateTime("2024-06-15"),
-                startHour: new \DateTime("2024-06-15 13:00:00"),
-                periodHours: 4,
-                clientID: 1
-            );
-            $test->save();
-        }
 
-        echo "Appointment populated with 1 record\n";
+        echo "Appointment populated with" . $numberOFAppointments . " \n";
     }
 }

@@ -19,8 +19,7 @@ jobs:
       - name: PHPUnit Units test
         run: ./run test tests/Unit
 
-      - name: PHPUNIT UnitTests
-        run: ./run test tests/unit
+
 
   code_quality:
     name: Code_Quality_Check

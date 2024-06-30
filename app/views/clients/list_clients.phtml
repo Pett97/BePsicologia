@@ -6,18 +6,18 @@
   </div>
   <?php foreach ($clients as $client) : ?>
     <ul class="collection">
-       <li class="collection-item"><?=$client->getName()?> </li>
+       <li class="collection-item"><?=$client->id.":". $client->name?> </li>
         <div class="right">
-          <form action="<?= route("client.destroy",["id"=>$client->getId()])?>" method="POST">
+          <form action="<?= route("client.destroy",["id"=>$client->id])?>" method="POST">
             <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="id_delete" value="<?= route("client.destroy",["id"=>$client->getId()])?>">
+            <input type="hidden" name="id_delete" value="<?= route("client.destroy",["id"=>$client->id])?>">
             <button class="waves-effect waves-light btn-small red" type="submit"><i class="material-icons center">delete</i></button>
           </form>
         </div>
 
-        <a href="<?= route("client.edit",["id"=>$client->getId()])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
+        <a href="<?= route("client.edit",["id"=>$client->id])?>" class="right yellow accent-4 waves-effect waves-light btn-small"><i class="material-icons center">edit</i></a>
 
-        <a href="<?= route("client.show",["id"=>$client->getId()])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
+        <a href="<?= route("client.show",["id"=>$client->id])?>" class="right blue accent-4 waves-effect waves-light btn-small"><i class="material-icons center">search</i></a>
       </li>
     </ul>
   <?php endforeach ?>

@@ -1,5 +1,4 @@
 <?php
-
 namespace Core\Database;
 
 use Core\Constants\Constants;
@@ -15,7 +14,7 @@ class Database
         $port = $_ENV['DB_PORT'];
         $db   = $_ENV['DB_DATABASE'];
 
-        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user,$pwd);
+        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port . ';dbname=' . $db, $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
@@ -27,7 +26,7 @@ class Database
         $pwd  = $_ENV['DB_PASSWORD'];
         $host = $_ENV['DB_HOST'];
         $port = $_ENV['DB_PORT'];
-        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port, $user,$pwd);
+        $pdo = new PDO('mysql:host=' . $host . ';port=' . $port, $user, $pwd);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $pdo;
@@ -35,9 +34,15 @@ class Database
 
     public static function create(): void
     {
-        $sql = "drop database if exists" . $_ENV['DB_DATABASE'] . ';';
-        $sql = 'CREATE DATABASE IF NOT EXISTS ' . $_ENV['DB_DATABASE'] . ';';
+        $sql = 'DROP DATABASE IF EXISTS ' . $_ENV['DB_DATABASE'] . ';';
+        error_log("Executing SQL: " . $sql);
         self::getConn()->exec($sql);
+
+        $sql = 'CREATE DATABASE IF NOT EXISTS ' . $_ENV['DB_DATABASE'] . ';';
+        error_log("Executing SQL: " . $sql);
+        self::getConn()->exec($sql);
+
+        error_log("Database created");
     }
 
     public static function drop(): void

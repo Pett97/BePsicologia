@@ -2,31 +2,56 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\City;
 use App\Models\Client;
-use Lib\Paginator;
-use PHPUnit\Framework\TestCase;
+use App\Models\Insurance;
+use App\Models\State;
+use Tests\TestCase;
 
 class ClientTest extends TestCase
 {
-    public function test_can_set_name(): void
-    {
-        $client = new Client(
-            name:"ana",
-            phone:"429888534488",
-            insurance_id:0,
-            streetName:"rua teste",
-            numberHouse:200,
-            city_id:0
-        );
+    private State $state;
+    private City $city;
 
-        $this->assertEquals("ana", $client->getName());
+    private Insurance $insurance;
+    private Client $client;
+
+
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->state = new State([
+            'name' => 'Parana'
+        ]);
+        $this->state->save();
+
+        $this->city = new City([
+            'name' => 'Guarapuava',
+            'state_id' => $this->state->id
+        ]);
+        $this->city->save();
+
+        $this->insurance = new Insurance([
+            'name' => 'ConvenioTeste'
+        ]);
+        $this->insurance->save();
+
+        $this->client = new Client([
+            'name' => "ClienteTeste",
+            'phone' => "022345678",
+            'insurance_id' => $this->insurance->id,
+            'street_name' => "nova brasilia",
+            'number' => 285,
+            'city_id' => $this->city->id
+        ]);
+        $this->client->save();
     }
 
-    public function test_dont_create_without_name(): void
+    public function test_should_create_new_client(): void
     {
-        $client = new Client(name:'');
-
-        $hasErrors = $client->hasErrors();
-        $this->assertFalse($hasErrors);
+        $this->assertTrue($this->client->save());
+        $this->assertCount(1, Client::all());
     }
 }

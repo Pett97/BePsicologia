@@ -14,16 +14,18 @@
 <body>
   <section>
     <nav>
+
       <div class="nav-wrapper blue darken-4">
         <a class="brand-logo center">BePsicologia</a>
-        <ul id="nav-mobile" class="left ">
-          <li><a href="<?= route("clients.list") ?>">Clientes</a></li>
-          <li><a href="<?= route("schedules.list") ?>">Horários</a></li>
-          <li><a href="<?= route("list.appointaments") ?>">Agendamentos</a></li>
-        </ul>
         <?php if ($this->currentUser()) : ?>
+          <ul id="nav-mobile" class="left ">
+            <li><a href="<?= route("clients.list") ?>">Clientes</a></li>
+            <li><a href="<?= route("schedules.list") ?>">Horários</a></li>
+            <li><a href="<?= route("list.appointaments") ?>">Agendamentos</a></li>
+          </ul>
+
           <ul id="nav-mobile" class="right ">
-            <li><span class="white-text"><?= $this->currentUser->getName() ?></span></li>
+            <li><span class="white-text"><?="Ajustar Nome Usuário"?></span></li>
             <li><a href="<?= route("logout") ?>"><button class="waves-effect waves-light btn-flat red darken-1"><span class="white-text">SAIR</span></button></a></li>
           </ul>
         <?php endif; ?>
@@ -33,7 +35,7 @@
   <br>
   <div class="container">
     <nav>
-      <div class="nav-wrapper blue darken-4 center"> <?= $title ?> </div>
+      <div class="nav-wrapper blue darken-4 center">  </div>
     </nav>
     <br>
     <?php require "_flashMessage.phtml"; ?>

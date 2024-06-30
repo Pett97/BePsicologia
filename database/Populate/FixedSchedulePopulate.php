@@ -2,26 +2,27 @@
 
 namespace Database\Populate;
 
-use App\Models\City;
+
 use App\Models\FixedSchedule;
-use App\Models\State;
-use App\Models\User;
+
 
 class FixedSchedulePopulate
 {
     public static function populate()
     {
 
-        for ($i = 0; $i < 2; $i++) {
-            $test = new FixedSchedule(
-                userID: 1,
-                dayOFWeek: $i,
-                startTime: new \DateTime("2024-06-15 13:00:00"),
-                endTime: new \DateTime("2024-06-15 17:00:00")
-            );
-            $test->save();
+        for ($i = 1; $i < 4; $i++) {
+            $test = [
+                'psychologist_id' => $i,
+                'day_of_week' => 4,
+                'start_time' => "2024-04-04 13:00:" . $i,
+                'end_time' => "2024-04-04 19:00:" . $i,
+            ];
+
+            $fixedSchedule = new FixedSchedule($test);
+            $fixedSchedule->save();
         }
 
-        echo "FixedSchedule populated with 10 record\n";
+        echo "FixedSchedule populated with 4 record \n";
     }
 }
