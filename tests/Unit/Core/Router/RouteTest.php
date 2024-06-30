@@ -13,6 +13,7 @@ class RouteTest extends TestCase
 {
     public function test_should_create_route_using_constructor(): void
     {
+        //ok
         $route = new Route(method: 'GET', uri: '/', controllerName: MockController::class, actionName: 'action');
 
         $this->assertEquals('GET', $route->getMethod());
@@ -23,6 +24,7 @@ class RouteTest extends TestCase
 
     public function test_should_add_route_to_the_router_method_get(): void
     {
+        //ok
         $routerReflection = new \ReflectionClass(Router::class);
         $instanceProperty = $routerReflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
@@ -50,6 +52,7 @@ class RouteTest extends TestCase
 
     public function test_should_add_route_to_the_router_method_post(): void
     {
+        //ok
         $routerReflection = new \ReflectionClass(Router::class);
         $instanceProperty = $routerReflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
@@ -77,6 +80,7 @@ class RouteTest extends TestCase
 
     public function test_should_add_route_to_the_router_method_put(): void
     {
+        //ok
         $routerReflection = new \ReflectionClass(Router::class);
         $instanceProperty = $routerReflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
@@ -104,6 +108,7 @@ class RouteTest extends TestCase
 
     public function test_should_add_route_to_the_router_method_delete(): void
     {
+        //ok
         $routerReflection = new \ReflectionClass(Router::class);
         $instanceProperty = $routerReflection->getProperty('instance');
         $instanceProperty->setAccessible(true);
@@ -134,7 +139,7 @@ class RouteTest extends TestCase
     {
         $route = new Route(method: 'GET', uri: '/', controllerName: 'MockController', actionName: 'index');
 
-        $this->assertTrue($route->match($this->testRequest('GET', '/')));
+        $this->assertTrue($route->match($this->request('GET', '/')));
     }
 
 
@@ -151,15 +156,15 @@ class RouteTest extends TestCase
     {
         $route = new Route(method: 'GET', uri: '/', controllerName: 'MockController', actionName: 'index');
 
-        $this->assertFalse($route->match($this->testRequest('POST', "asdasd")));
-        $this->assertFalse($route->match($this->testRequest("GET", "/test")));
+        $this->assertFalse($route->match($this->request('POST', "asdasd")));
+        $this->assertFalse($route->match($this->request("GET", "/test")));
     }
 
     public function test_match_should_return_true_and_add_params_if_method_and_uri_with_params_match(): void
     {
         $route = new Route(method: 'GET', uri: '/test/{id}', controllerName: 'MockController', actionName: 'show');
 
-        $request = $this->testRequest('GET', '/test/1');
+        $request = $this->request('GET', '/test/1');
 
         $this->assertTrue($route->match($request));
         $this->assertEquals(['id' => 1], $request->getParams());
@@ -168,14 +173,14 @@ class RouteTest extends TestCase
     public function test_match_should_return_true_using_query_params(): void
     {
         $route = new Route(method: 'GET', uri: '/test', controllerName: 'MockController', actionName: 'show');
-        $request = $this->testRequest('GET', '/test?user_id=1&id=2');
+        $request = $this->request('GET', '/test?user_id=1&id=2');
 
         $this->assertTrue($route->match($request));
     }
 
-    private function testRequest(string $method, string $uri): Request
+    private function request(string $method, string $uri): Request
     {
-        require_once Constants::rootPath()->join('../../tests/Unit/Core/Http/header_mock.php');
+        require_once Constants::rootPath()->join('tests/Unit/Core/Http/header_mock.php');
 
         $_SERVER['REQUEST_METHOD'] = $method;
         $_SERVER['REQUEST_URI'] = $uri;

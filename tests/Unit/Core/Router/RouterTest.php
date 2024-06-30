@@ -6,7 +6,6 @@ use Core\Constants\Constants;
 use Core\Exceptions\HTTPException;
 use Core\Router\Route;
 use Core\Router\Router;
-use PHPUnit\TextUI\Configuration\Constant;
 use Tests\TestCase;
 
 class RouterTest extends TestCase
@@ -14,9 +13,8 @@ class RouterTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        require_once Constants::rootPath()->join("../../tests/Unit/Core/Http/header_mock.php");
+        require_once Constants::rootPath()->join('tests/Unit/Core/Http/header_mock.php');
     }
-
 
     public function tearDown(): void
     {
@@ -24,7 +22,6 @@ class RouterTest extends TestCase
         $instanceProperty = $routerReflection->getProperty('instance');
         $instanceProperty->setValue(null, null);
     }
-
 
     public function test_singleton_should_return_the_same_object(): void
     {
@@ -56,7 +53,11 @@ class RouterTest extends TestCase
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/test';
-        $this->assertInstanceOf(MockController::class, $router->dispatch());
+
+        $output = $this->getOutput(function () use ($router) {
+            $this->assertInstanceOf(MockController::class, $router->dispatch());
+        });
+        $this->assertEquals('Action Called', $output);
     }
 
     public function test_should_not_dispatch_if_route_does_not_match(): void
@@ -101,6 +102,16 @@ class RouterTest extends TestCase
         $this->assertEquals('/test/2/test-1/1', $router->getRoutePathByName('test.one', ['id' => 1, 'user_id' => 2]));
     }
 
+    public function test_should_get_route_path_by_name_with_params_with_different_order(): void
+    {
+        $router = Router::getInstance();
+        $router->addRoute(
+            new Route('GET', '/test/{user_id}/test-1/{id}', MockController::class, 'action')
+        )->name('test.one');
+
+        $this->assertEquals('/test/2/test-1/1', $router->getRoutePathByName('test.one', ['id' => 1, 'user_id' => 2,]));
+    }
+
     public function test_should_get_route_path_by_name_with_params_and_query_params(): void
     {
         $router = Router::getInstance();
@@ -116,5 +127,29 @@ class RouterTest extends TestCase
 
         $this->expectException(\Exception::class);
         $router->getRoutePathByName('not-found');
+    }
+
+    public function test_get_route_size(): void
+    {
+        $router = Router::getInstance();
+        $route = $this->createMock(Route::class);
+
+        $router->addRoute($route);
+        $router->addRoute($route);
+
+        $this->assertEquals(2, $router->getRouteSize());
+    }
+
+    public function test_get_route(): void
+    {
+        $router = Router::getInstance();
+        $route1 = $this->createMock(Route::class);
+        $route2 = $this->createMock(Route::class);
+
+        $router->addRoute($route1);
+        $router->addRoute($route2);
+
+        $this->assertSame($route1, $router->getRoute(0));
+        $this->assertSame($route2, $router->getRoute(1));
     }
 }

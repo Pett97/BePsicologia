@@ -7,7 +7,7 @@ use Lib\Validations;
 
 class City extends Model
 {
-    protected static string $table=  "citys";
+    protected static string $table =  "citys";
     protected static array $columns = ['name','state_id'];
 
     public function validates(): void

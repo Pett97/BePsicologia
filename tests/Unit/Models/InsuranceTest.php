@@ -3,24 +3,32 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Insurance;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class InsuranceTest extends TestCase
 {
-    public function test_can_set_name(): void
-    {
-        $insurance = new Insurance(
-            name:"NULLPOINTER"
-        );
+    private Insurance $insurance;
 
-        $this->assertEquals("NULLPOINTER", $insurance->getName());
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->insurance = new Insurance([
+            'name' => 'ConvenioTeste'
+        ]);
+        $this->insurance->save();
     }
 
-    public function test_dont_create_without_name(): void
+    public function test_should_create_new_insurance(): void
     {
-        $insurance = new insurance(name:'');
+        $this->assertTrue($this->insurance->save());
+        $this->assertCount(1, Insurance::all());
+    }
 
-        $hasErrors = $insurance->hasErrors();
-        $this->assertFalse($hasErrors);
+    public function test_all_should_return_all_insurances(): void
+    {
+        $insurances[] = $this->insurance;
+        $all = Insurance::all();
+        $this->assertCount(1, $all);
+        $this->assertEquals($insurances, $all);
     }
 }

@@ -2,59 +2,64 @@
 
 namespace Tests\Unit\Controllers;
 
-//require "/var/www/core/constants/general.php";
-
 use App\Models\City;
 use App\Models\Client;
 use App\Models\Insurance;
 use App\Models\State;
+use Tests\TestCase;
 
 class ClientsControllerTest extends ControllerTestCase
 {
+    private State $state;
+    private City $city;
+    private Insurance $insurance;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $state = new State(name: "Springfield");
-        $state->save();
+        $this->state = new State(['name' => 'Parana']);
+        $this->state->save();
 
-        $city = new City(name: "South Park", idState: $state->getID());
-        $city->save();
+        $this->city = new City([
+            'name' => 'Guarapuava',
+            'state_id' => $this->state->id
+        ]);
+        $this->city->save();
 
-        $insurance = new Insurance(name: "Test");
-        $insurance->save();
+        $this->insurance = new Insurance(['name' => 'ConvenioTeste']);
+        $this->insurance->save();
     }
 
     public function test_list_all_clients(): void
     {
-        $clients[] = new Client(
-            name: "ana",
-            phone: "429888534488",
-            insurance_id: 1,
-            streetName: "rua teste",
-            numberHouse: 200,
-            city_id: 1
-        );
-        $clients[] = new Client(
-            name: "ana2",
-            phone: "429888534488",
-            insurance_id: 1,
-            streetName: "rua teste",
-            numberHouse: 200,
-            city_id: 1
-        );
-
+        $clients = [
+            new Client([
+                'name' => "ClienteTeste",
+                'phone' => "022345678",
+                'insurance_id' => $this->insurance->id,
+                'street_name' => "nova brasilia",
+                'number' => 285,
+                'city_id' => $this->city->id
+            ]),
+            new Client([
+                'name' => "ClienteTeste2",
+                'phone' => "022345678",
+                'insurance_id' => $this->insurance->id,
+                'street_name' => "California",
+                'number' => 285,
+                'city_id' => $this->city->id
+            ])
+        ];
 
         foreach ($clients as $client) {
             $client->save();
         }
 
-        $response  = $this->get(action: "index", controller: "App\Controllers\ClientsController");
 
-
-
+        $response = $this->get(action: 'index', controller: 'App\Controllers\ClientsController');
         foreach ($clients as $client) {
-            $this->assertMatchesRegularExpression("/{$client->getName()}/", $response);
+            $this->assertMatchesRegularExpression("/{$client->name}/", $response);
         }
     }
 }

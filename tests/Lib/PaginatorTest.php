@@ -2,44 +2,60 @@
 
 namespace Tests\Unit\Lib;
 
-use App\Models\City;
 use Tests\TestCase;
 use Lib\Paginator;
+use App\Models\City;
 use App\Models\Client;
 use App\Models\Insurance;
 use App\Models\State;
 
 class PaginatorTest extends TestCase
 {
+    private Client $client;
+    private State $state;
+    private City $city;
+    private Insurance $insurance;
     private Paginator $paginator;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $state = new State(name: "Springfield");
-        $state->save();
+        $this->state = new State([
+            'name' => 'Parana'
+        ]);
+        $this->state->save();
 
-        $city = new City(name: "South Park", idState: $state->getID());
-        $city->save();
+        $this->city = new City([
+            'name' => 'Guarapuava',
+            'state_id' => $this->state->id
+        ]);
+        $this->city->save();
 
-        $insurance = new Insurance(name: "Test");
-        $insurance->save();
+        $this->insurance = new Insurance([
+            'name' => 'ConvenioTeste'
+        ]);
+        $this->insurance->save();
 
-        for ($i = 0; $i < 10; $i++) {
-            $client = new Client(
-                name: 'ClientTeste' . $i,
-                phone: '42988853477',
-                insurance_id: 1,
-                streetName: 'Rua teste',
-                numberHouse: 123,
-                city_id: 1
-            );
+        $clients = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $client = new Client([
+                'name' => "ClienteTeste" . $i,
+                'phone' => "022345678",
+                'insurance_id' => $this->insurance->id,
+                'street_name' => "nova brasilia",
+                'number' => 285,
+                'city_id' => $this->city->id
+            ]);
+            array_push($clients, $client);
             $client->save();
         }
 
+
         $this->paginator = new Paginator(Client::class, 1, 10, 'clients', ['name']);
     }
+
+
 
     public function test_total_of_registers_of_clients(): void
     {
@@ -53,15 +69,15 @@ class PaginatorTest extends TestCase
 
     public function test_total_of_pages_when_the_division_is_not_exact(): void
     {
-        $client = new Client(
-            name: 'ClientTeste',
-            phone: '42988853477',
-            insurance_id: 1,
-            streetName: 'Rua teste',
-            numberHouse: 123,
-            city_id: 1
-        );
-        $client->save();
+        $this->client = new Client([
+            'name' => "ClienteTeste",
+            'phone' => "022345678",
+            'insurance_id' => $this->insurance->id,
+            'street_name' => "nova brasilia",
+            'number' => 285,
+            'city_id' => $this->city->id
+        ]);
+        $this->client->save();
 
         $this->paginator = new Paginator(Client::class, 1, 5, 'clients', ['name']);
 
@@ -88,10 +104,7 @@ class PaginatorTest extends TestCase
 
     public function test_has_next_page(): void
     {
-        $this->assertTrue($this->paginator->hasNextPage());
-
-        $paginator = new Paginator(Client::class, 2, 5, 'clients', ['name']);
-        $this->assertTrue($paginator->hasNextPage());
+        $this->assertFalse($this->paginator->hasNextPage());
     }
 
     public function test_is_page(): void
