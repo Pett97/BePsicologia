@@ -20,7 +20,7 @@ class SupplyPopulate
                 'state_id' => $i
             ];
             $dataInsurance = [
-                'name' => "Convencio" . $i
+                'name' => "Convenio" . $i
             ];
             $state = new State($dataState);
             $state->save();

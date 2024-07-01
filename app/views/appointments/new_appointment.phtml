@@ -3,8 +3,12 @@
     <form action="<?= route("create.appointaments")?>" method="POST" class="col s12">
       <div class="row">
         <div class="input-field col s12 m12 l6">
-          <input  id="userID" type="text" class="validate" name="appointment[psychologist_id]" required>
-          <label for="userID">Responśavel</label>
+          <select name="appointment[psychologist_id]">
+            <?php foreach ($users as $user) : ?>
+              <option value="<?= $user->id ?>"><?= $user->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar o Responśavel</label>
         </div>
 
         <div class="input-field col s12 m12 l6">
@@ -23,10 +27,14 @@
         </div>
 
         <div class="input-field col s12 m12 l6">
-          <input  id="clientID" type="text" class="validate" name="appointment[client_id]" required>
-          <label for="clientID">Cliente</label>
+          <select name="appointment[client_id]">
+            <?php foreach ($clients as $client) : ?>
+              <option value="<?= $client->id ?>"><?= $client->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar o Cliente</label>
         </div>
-        
+
       </div>
       <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
     </form>

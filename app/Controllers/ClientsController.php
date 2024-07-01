@@ -2,9 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\City;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use App\Models\Client;
+use App\Models\Insurance;
 use Core\Http\Controllers\Controller;
 
 class ClientsController extends Controller
@@ -26,16 +28,18 @@ class ClientsController extends Controller
 
     public function new(): void
     {
+        $insurances = Insurance::all();
+        $citys = City::all();
         $title = "Novo Cliente";
         $client = new Client();
-        $this->render("clients/new_client", compact("client", "title"));
+        $this->render("clients/new_client", compact("client", "insurances", "citys", "title"));
     }
 
     public function create(Request $request): void
     {
         $params = $request->getParams();
-        //dd($params);
-        //passa a array form
+      //dd($params);
+      //passa a array form
         $client = new Client($params["client"]);
 
         if ($client->save()) {
@@ -58,12 +62,14 @@ class ClientsController extends Controller
 
     public function edit(Request $request): void
     {
+        $insurances = Insurance::all();
+        $citys = City::all();
         $params = $request->getParams();
         $client = Client::findByID($params["id"]);
 
         if ($client !== null) {
             $title = "Editar Client ";
-            $this->render("clients/edit_client", compact("client", "title"));
+            $this->render("clients/edit_client", compact("client", "insurances", "citys", "title"));
         } else {
             FlashMessage::danger("Cliente não encontrado.");
             $this->redirectTo(route("clients.list"));
@@ -82,7 +88,7 @@ class ClientsController extends Controller
             return;
         }
 
-        //fill no Model
+      //fill no Model
         $client->fill($params);
 
         if ($client->save()) {

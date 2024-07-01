@@ -1,17 +1,21 @@
 <section>
   <div class="row">
-    <form action="<?= route("create.schedule")?>" method="POST" class="col s12">
+    <form action="<?= route("create.schedule") ?>" method="POST" class="col s12">
       <div class="row">
         <div class="input-field col s12 m12 l6">
-          <input placeholder="Psicologo" id="psicoID" type="text" class="validate" name="psicoID" required>
-          <label for="psicoID">Selecione o Psicologo</label>
+            <select name="psicoID">
+              <?php foreach ($users as $user) : ?>
+                <option value="<?= $user->id ?>"><?= $user->name ?></option>
+              <?php endforeach ?>
+            </select>
+            <label>Selecionar O Responsável</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input placeholder="2 : Para Segunda Feira" id="dayOFWeek" type="text" class="validate" name="dayOFWeek" required>
           <label for="dayOFWeek">Dia da Semana</label>
         </div>
         <div class="input-field col s12 m12 l6">
-          <input  id="startTime" type="text" class="validate" name="startTime" required>
+          <input id="startTime" type="text" class="validate" name="startTime" required>
           <label for="startTime">Hora de Inicio</label>
         </div>
         <div class="input-field col s12 m12 l6">
