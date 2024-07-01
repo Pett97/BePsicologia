@@ -1,32 +1,40 @@
 <section>
-    <div class="row">
-        <h4>Editar Agendamento #<?= $appointment->id ?></h4>
-        <form id="editAppointmentForm" action="<?= route("appointaments.update", ["id" => $appointment->id]) ?>" method="POST" class="col s12">
-            <div class="row">
-                <input type="hidden" name="_method" value="PUT">
-                <div class="input-field col s12 m6">
-                    <input value="<?= $appointment->psychologist_id ?>" id="newUserID" type="text" class="validate" name="appointment[psychologist_id]" required>
-                    <label for="newUserID">Editar Responsável</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <input value="<?= (new DateTime($appointment->date))->format("d/m/Y") ?>" id="newDate" type="text" class="validate" name="appointment[new_date]" required>
-                    <label for="newDate">Nova Data</label>
-                </div>
-                <input type="hidden" id="newDateISO" name="appointment[date]">
-                <div class="input-field col s12 m6">
-                    <input value="<?= (new DateTime($appointment->start_time))->format("H:i:s") ?>" id="newStartHour" type="text" class="validate" name="appointment[start_time]" required>
-                    <label for="newStartHour">Novo Horário Início</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <input value="<?= (new DateTime($appointment->end_time))->format("H:i:s") ?>" id="newEndHours" type="text" class="validate" name="appointment[end_time]" required>
-                    <label for="newEndHours">Novo Horário Término</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <input value="<?= $appointment->client_id ?>" id="newClientID" type="text" class="validate" name="appointment[client_id]" required>
-                    <label for="newClientID">Alteração Cliente</label>
-                </div>
-            </div>
-            <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
-        </form>
-    </div>
+  <div class="row">
+    <h4>Editar Agendamento #<?= $appointment->id ?></h4>
+    <form id="editAppointmentForm" action="<?= route("appointaments.update", ["id" => $appointment->id]) ?>" method="POST" class="col s12">
+      <div class="row">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="input-field col s12 m6">
+          <select name="appointment[psychologist_id]">
+            <?php foreach ($users as $user) : ?>
+              <option value="<?= $user->id ?>"><?= $user->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar o Responśavel</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input value="<?= (new DateTime($appointment->date))->format("d/m/Y") ?>" id="newDate" type="text" class="validate" name="appointment[new_date]" required>
+          <label for="newDate">Nova Data</label>
+        </div>
+        <input type="hidden" id="newDateISO" name="appointment[date]">
+        <div class="input-field col s12 m6">
+          <input value="<?= (new DateTime($appointment->start_time))->format("H:i:s") ?>" id="newStartHour" type="text" class="validate" name="appointment[start_time]" required>
+          <label for="newStartHour">Novo Horário Início</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input value="<?= (new DateTime($appointment->end_time))->format("H:i:s") ?>" id="newEndHours" type="text" class="validate" name="appointment[end_time]" required>
+          <label for="newEndHours">Novo Horário Término</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <select name="appointment[client_id]">
+            <?php foreach ($clients as $client) : ?>
+              <option value="<?= $client->id ?>"><?= $client->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar o Cliente</label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>
+    </form>
+  </div>
 </section>

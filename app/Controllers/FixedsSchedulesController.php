@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\FixedSchedule;
+use App\Models\User;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use Core\Http\Controllers\Controller;
@@ -12,12 +13,13 @@ class FixedsSchedulesController extends Controller
 {
     public function index(Request $request): void
     {
+        $users = User::all();
         $page = $request->getParam('page', 1);
         $itemsPerPage = $request->getParam('items_per_page', 10);
         $paginator = FixedSchedule::paginate($page, $itemsPerPage);
         $fixedSchedules = $paginator->registers();
 
-        //dd($clients);
+      //dd($clients);
         $title = "Horários Fixos De Trabalho";
 
         if ($request->acceptJson()) {
@@ -30,9 +32,9 @@ class FixedsSchedulesController extends Controller
     public function new(): void
     {
         $title = "Novo Horário";
+        $users = User::all();
         $fixedSchedule = new FixedSchedule();
-        $this->render("fixeds_schedules/new_schedule", compact("fixedSchedule", "title"));
-        $view = "/var/www/app/views/fixeds_shedules/.phtml";
+        $this->render("fixeds_schedules/new_schedule", compact("fixedSchedule", "users", "title"));
     }
 
     public function create(Request $request): void
@@ -40,10 +42,10 @@ class FixedsSchedulesController extends Controller
         $params = $request->getParams();
 
         $fixedScheduleData = [
-            'psychologist_id' => $params["psicoID"],
-            'day_of_week' => $params["dayOFWeek"],
-            'start_time' => $params["startTime"],
-            'end_time' => $params["endTime"]
+        'psychologist_id' => $params["psicoID"],
+        'day_of_week' => $params["dayOFWeek"],
+        'start_time' => $params["startTime"],
+        'end_time' => $params["endTime"]
         ];
 
         $fixedSchedule = new FixedSchedule($fixedScheduleData);
@@ -74,16 +76,17 @@ class FixedsSchedulesController extends Controller
 
     public function edit(Request $request): void
     {
+        $users = User::all();
         $params = $request->getParams();
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
         $title = "Editar:  {$fixedSchedule->id}";
-        $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "title"));
+        $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "users", "title"));
     }
 
     public function update(Request $request): void
     {
         $params = $request->getParams();
-        //dd($params);
+      //dd($params);
 
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
 

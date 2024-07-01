@@ -16,8 +16,12 @@
 
         <div class="input-field col s12 m12 l12">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $client->insurance_id ?>" placeholder="newClientInsuranceID" id="newClientInsuranceID" type="text" class="validate" name="client[insurance_id]" required>
-          <label for="newClientInsuranceID">Convenio</label>
+          <select name="client[insurance_id]">
+            <?php foreach ($insurances as $insurance) : ?>
+              <option value="<?= $insurance->id ?>"><?= $insurance->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar O Convenio</label>
         </div>
 
         <div class="input-field col s12 m3 l3">
@@ -34,8 +38,12 @@
 
         <div class="input-field col s12 m3 l3">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $client->city_id ?>" placeholder="newClientCity" id="newClientCity" type="text" class="validate" name="client[city_id]" required>
-          <label for="newClientCity">Cidade</label>
+          <select name="client[city_id]">
+            <?php foreach ($citys as $city) : ?>
+              <option value="<?= $city->id ?>"><?= $city->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar a Cidade</label>
         </div>
 
       </div>

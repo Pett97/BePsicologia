@@ -4,8 +4,12 @@
       <div class="row">
         <div class="input-field col s12 m3 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $fixedSchedule->id ?>" placeholder="Psicologo" id="userID" type="text" name="fixedSchedule[psychologist_id]" readonly>
-          <label for="userID">Nome Psicologo <?= $fixedSchedule->id ?></label>
+          <select name="fixedSchedule[psychologist_id]">
+              <?php foreach ($users as $user) : ?>
+                <option value="<?= $user->id ?>"><?= $user->name ?></option>
+              <?php endforeach ?>
+            </select>
+            <label>Selecionar O Responsável</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">

@@ -1,6 +1,6 @@
 <section>
   <div class="row">
-    <form action="<?= route("create.client")?>" method="POST" class="col s12">
+    <form action="<?= route("create.client") ?>" method="POST" class="col s12">
       <div class="row">
         <div class="input-field col s12 m12 l6">
           <input placeholder="Exemplo: Ana" id="client_name" type="text" class="validate" name="client[name]" required>
@@ -11,8 +11,12 @@
           <label for="client_phone">Telefone:</label>
         </div>
         <div class="input-field col s12 m12 l6">
-          <input placeholder="Convenio X" id="client_insurance" type="number" class="validate" name="client[insurance_id]" required>
-          <label for="client_insurance">Convenio:</label>
+          <select name="client[insurance_id]">
+            <?php foreach ($insurances as $insurance) : ?>
+              <option value="<?= $insurance->id ?>"><?= $insurance->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar O Convenio</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input placeholder="Exemplo:Rua 1 " id="client_street" type="text" class="validate" name="client[street_name]" required>
@@ -23,8 +27,12 @@
           <label for="number_house">numero:</label>
         </div>
         <div class="input-field col s12 m12 l6">
-          <input placeholder="255" id="city_id" type="number" class="validate" name="client[city_id]" required>
-          <label for="city_id">Cidade ID:</label>
+        <select name="client[city_id]">
+            <?php foreach ($citys as $city) : ?>
+              <option value="<?= $city->id ?>"><?= $city->name ?></option>
+            <?php endforeach ?>
+          </select>
+          <label>Selecionar a Cidade</label>
         </div>
       </div>
       <button class="waves-effect waves-light btn blue" type="submit">Salvar</button>

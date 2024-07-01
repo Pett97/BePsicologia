@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Client;
+use App\Models\User;
 use Core\Http\Request;
 use Lib\FlashMessage;
 use Core\Http\Controllers\Controller;
@@ -26,21 +28,22 @@ class AppointmentsController extends Controller
     public function new(): void
     {
         $appointment = $this->current_user->appointments()->new();
-
+        $clients = Client::all();
+        $users = User::all();
         $title = 'Novo Agendamento';
-        $this->render('appointments/new_appointment', compact('appointment', 'title'));
+        $this->render('appointments/new_appointment', compact('appointment', "clients", "users", 'title'));
     }
 
     public function create(Request $request): void
     {
         $params = $request->getParams();
-        //dd($params);
+      //dd($params);
         $testAppointament = [
-            'psychologist_id' => $params["appointment"]["psychologist_id"],
-            'date' => $params["appointment"]["date"],
-            'start_time' => $params["appointment"]["start_time"],
-            'end_time' => $params["appointment"]["end_time"],
-            'client_id' => $params["appointment"]["client_id"]
+        'psychologist_id' => $params["appointment"]["psychologist_id"],
+        'date' => $params["appointment"]["date"],
+        'start_time' => $params["appointment"]["start_time"],
+        'end_time' => $params["appointment"]["end_time"],
+        'client_id' => $params["appointment"]["client_id"]
         ];
         $appointment = new Appointment($testAppointament);
         $appointment = $this->current_user->appointments()->new($params['appointment']);
@@ -70,12 +73,14 @@ class AppointmentsController extends Controller
 
     public function edit(Request $request): void
     {
+        $clients = Client::all();
+        $users = User::all();
         $id = $request->getParam("id");
         $params = $request->getParams();
         $appointment = $this->current_user->appointments()->findById((int)$id);
 
         $title = "Editar Agendamento #{$appointment->id}";
-        $this->render('appointments/edit_appointment', compact('appointment', 'title'));
+        $this->render('appointments/edit_appointment', compact('appointment', "clients", "users", 'title'));
     }
 
     public function update(Request $request): void
