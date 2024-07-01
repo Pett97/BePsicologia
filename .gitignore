@@ -11,6 +11,9 @@
 #ignore log
 /log
 
+#ignore update photos
+/public/assets/uploads/
+
 
 
 #ignore envgit a

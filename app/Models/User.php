@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Services\ProfileAvatar;
 use Core\Database\ActiveRecord\BelongsToMany;
 use Core\Database\ActiveRecord\HasMany;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
+use PDO;
 
 /**
  * @property int $id
@@ -18,7 +20,7 @@ use Core\Database\ActiveRecord\Model;
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $columns = ['name', 'email', 'encrypted_password', 'city_id'];
+    protected static array $columns = ['name', 'email', 'encrypted_password', 'city_id', 'avatar_name'];
 
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
@@ -63,6 +65,8 @@ class User extends Model
         return User::findBy(['email' => $email]);
     }
 
+
+
     public function __set(string $property, mixed $value): void
     {
         parent::__set($property, $value);
@@ -74,5 +78,9 @@ class User extends Model
         ) {
             $this->encrypted_password = password_hash($value, PASSWORD_DEFAULT);
         }
+    }
+    public function avatar(): ProfileAvatar
+    {
+        return new ProfileAvatar($this);
     }
 }

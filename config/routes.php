@@ -5,6 +5,7 @@ use App\Controllers\AuthenticationsController;
 use Core\Router\Route;
 use App\Controllers\ClientsController;
 use App\Controllers\FixedsSchedulesController;
+use App\Controllers\ProfileController;
 
 //Authentication
 Route::get('/', [AuthenticationsController::class, 'new'])->name('users.login');
@@ -17,6 +18,12 @@ Route::middleware("auth")->group(function () {
     Route::get("/", [AuthenticationsController::class, "new"])->name("users.login");
     Route::get("/login", [AuthenticationsController::class, "new"])->name("users.login");
     Route::get("/clients/page/{page}", [ClientsController::class, "index"])->name("clients.paginate");
+
+    //Profile
+    Route::get("/profile", [ProfileController::class, "show"])->name("profile.show");
+    Route::post("/profile/avatar", [ProfileController::class, "updateAvatar"])->name("profile.avatar");
+    Route::post("/profile/avatar/client", [ProfileController::class,
+    "updateClientAvatar"])->name("profile.avatar.client");
 
     //create
     Route::get("/clients/new", [ClientsController::class, "new"])->name("new.client");

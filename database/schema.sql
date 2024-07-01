@@ -31,6 +31,7 @@ CREATE TABLE users (
     email VARCHAR(50) UNIQUE NOT NULL,
     encrypted_password VARCHAR(250) NOT NULL,
     city_id INT NOT NULL,
+    avatar_name VARCHAR(64),
     FOREIGN KEY (city_id) REFERENCES citys(id) ON DELETE CASCADE
 );
 
@@ -43,6 +44,7 @@ CREATE TABLE clients (
     street_name VARCHAR(255) NOT NULL,
     number INT NOT NULL,
     city_id INT NOT NULL,
+    avatar_name VARCHAR(64),
     FOREIGN KEY (city_id) REFERENCES citys(id) ON DELETE CASCADE,
     FOREIGN KEY (insurance_id) REFERENCES insurances(id) ON DELETE CASCADE
 );
