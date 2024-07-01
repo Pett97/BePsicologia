@@ -1,33 +1,36 @@
-<div class="center-align">
-  <div class="row ">
-    <div class="col l12 m12 s12">
-      <div class="card blue darken-4">
-        <div class="card-content white-text">
-          <div class="row">
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="Nome: ".$client->name ?></span>
-            </div>
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="Telefone: ". $client->phone?></span>
-            </div>
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="Convenio: ". $client->insurance_id?></span>
-            </div>
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="Endereço: ". $client->street_name?></span>
-            </div>
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="N: ". $client->number?></span>
-            </div>
-            <div class="col s12 m6 l6">
-              <span class="card-title center-align"><?="Cidade: ". $client->city_id?></span>
-            </div>
-          </div>
+<div class="col s12 m7">
+  <h2 class="header">Cliente: <?= $client->name ?></h2>
+  <div class="card horizontal">
+    <div class="card-image">
+      <img id="image_preview" src="<?= $client->avatar()->path() ?>" alt="Client Avatar">
+    </div>
+    <div class="card-stacked">
+      <div class="card-content">
+        <div class="divider"></div>
+        <div class="section">
+          <h5>Telefone</h5>
+          <p><?= $client->phone ?></p>
         </div>
-        <div class="card-action right-align">
-          <a href="/clients">Voltar</a>
+        <div class="divider"></div>
+        <div class="section">
+          <h5>Convênio</h5>
+          <p><?= $client->insurance_id ?></p>
         </div>
+        <div class="divider"></div>
+        <div class="section">
+          <h5>Endereço</h5>
+          <p>Cidade: <?= $client->city_id ?></p>
+          <p>Rua: <?= $client->street_name ?></p>
+        </div>
+      </div>
+      <div class="card-action">
+        <a href="/clients">Voltar</a>
       </div>
     </div>
   </div>
 </div>
+
+<form action="<?= route("profile.avatar.client")?>" method="POST" enctype="multipart/form-data">
+  <input id="image_preview_input" type="file" name="client_avatar" id="user_avatar">
+  <button id="image_preview_submit" style="display: none;">Atualizar Foto</button>
+  </form>

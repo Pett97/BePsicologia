@@ -10,7 +10,7 @@ class UsersPopulate
     {
 
         $adminUser = [
-            'name' => 'Admin',
+            'name' => 'Bianca Teste',
             'email' => 'admin@example.com',
             'password' => 'admin123',
             'password_confirmation' => 'admin123',

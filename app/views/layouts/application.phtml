@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/assets/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="/assets/js/materialize.min.js"></script>
-  <script src="/assets/js/teste.js"></script>
+  <script src="/assets/js/application.js"></script>
 </head>
 
 <body>
@@ -25,7 +25,8 @@
           </ul>
 
           <ul id="nav-mobile" class="right ">
-            <li><span class="white-text"><?="Ajustar Nome Usuário"?></span></li>
+            <li><span class="white-text"><?=$this->currentUser()->name?></span></li>
+            <li><a href="<?= route("profile.show") ?>">Perfil</a></li>
             <li><a href="<?= route("logout") ?>"><button class="waves-effect waves-light btn-flat red darken-1"><span class="white-text">SAIR</span></button></a></li>
           </ul>
         <?php endif; ?>
