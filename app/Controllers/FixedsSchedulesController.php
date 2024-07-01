@@ -13,10 +13,10 @@ class FixedsSchedulesController extends Controller
 {
     public function index(Request $request): void
     {
-        $users = User::all();
-        $page = $request->getParam('page', 1);
+        //$page = $request->getParam('page', 1);
+        $paginator = $this->current_user->fixedschedules()->paginate(page: $request->getParam('page', 1));
         $itemsPerPage = $request->getParam('items_per_page', 10);
-        $paginator = FixedSchedule::paginate($page, $itemsPerPage);
+        //$paginator = FixedSchedule::paginate($page, $itemsPerPage);
         $fixedSchedules = $paginator->registers();
 
       //dd($clients);
@@ -32,9 +32,9 @@ class FixedsSchedulesController extends Controller
     public function new(): void
     {
         $title = "Novo Horário";
-        $users = User::all();
+        $user = $this->current_user;
         $fixedSchedule = new FixedSchedule();
-        $this->render("fixeds_schedules/new_schedule", compact("fixedSchedule", "users", "title"));
+        $this->render("fixeds_schedules/new_schedule", compact("fixedSchedule", "user", "title"));
     }
 
     public function create(Request $request): void
@@ -76,11 +76,11 @@ class FixedsSchedulesController extends Controller
 
     public function edit(Request $request): void
     {
-        $users = User::all();
+        $user = $this->current_user;
         $params = $request->getParams();
         $fixedSchedule = FixedSchedule::findByID($params["id"]);
         $title = "Editar:  {$fixedSchedule->id}";
-        $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "users", "title"));
+        $this->render("fixeds_schedules/edit_schedule", compact("fixedSchedule", "user", "title"));
     }
 
     public function update(Request $request): void

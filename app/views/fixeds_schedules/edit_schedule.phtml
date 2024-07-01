@@ -5,9 +5,8 @@
         <div class="input-field col s12 m3 l6">
           <input type="hidden" name="_method" value="PUT">
           <select name="fixedSchedule[psychologist_id]">
-              <?php foreach ($users as $user) : ?>
                 <option value="<?= $user->id ?>"><?= $user->name ?></option>
-              <?php endforeach ?>
+
             </select>
             <label>Selecionar O Responsável</label>
         </div>

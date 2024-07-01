@@ -30,6 +30,11 @@ class User extends Model
         return $this->hasMany(Appointment::class, 'psychologist_id');
     }
 
+    public function fixedschedules(): HasMany
+    {
+        return $this->hasMany(FixedSchedule::class, 'psychologist_id');
+    }
+
     public function reinforcedAppointments(): BelongsToMany
     {
         return $this->belongsToMany(

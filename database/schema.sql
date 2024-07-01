@@ -61,6 +61,8 @@ CREATE TABLE appointments (
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
 
+
+
 DROP TABLE IF EXISTS fixed_schedules;
 CREATE TABLE fixed_schedules (
     id INT AUTO_INCREMENT PRIMARY KEY,
