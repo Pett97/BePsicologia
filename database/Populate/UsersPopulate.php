@@ -3,11 +3,20 @@
 namespace Database\Populate;
 
 use App\Models\User;
+use App\Models\Master;
 
 class UsersPopulate
 {
     public static function populate()
     {
+        $masterUser=[
+            'name' => 'Master',
+            'email' => 'master@example.com',
+            'password' => 'master123',
+            'password_confirmation' => 'master123',
+        ];
+        $master = new Master($masterUser);
+        $master->save();
 
         $adminUser = [
             'name' => 'Bianca Teste',

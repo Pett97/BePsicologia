@@ -3,10 +3,16 @@
     <form action="<?= route("create.schedule") ?>" method="POST" class="col s12">
       <div class="row">
         <div class="input-field col s12 m12 l6">
-            <select name="psicoID">
+          <select name="psicoID">
+            <?php if ($isMaster): ?>
+              <?php foreach ($users as $user): ?>
                 <option value="<?= $user->id ?>"><?= $user->name ?></option>
-            </select>
-            <label>Selecionar O Responsável</label>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <option value="<?= $user->id ?>"><?= $user->name ?></option>
+            <?php endif; ?>
+          </select>
+          <label>Selecionar O Responsável</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input placeholder="2 : Para Segunda Feira" id="dayOFWeek" type="text" class="validate" name="dayOFWeek" required>
@@ -17,7 +23,7 @@
           <label for="startTime">Hora de Inicio</label>
         </div>
         <div class="input-field col s12 m12 l6">
-          <input placeholder="2 : Para Segunda Feira" id="endTime" type="text" class="validate" name="endTime" required>
+          <input id="endTime" type="text" class="validate" name="endTime" required>
           <label for="endTime">Hora de Fim</label>
         </div>
       </div>

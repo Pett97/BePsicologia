@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Master;
 use App\Models\User;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
@@ -19,9 +20,13 @@ class AuthenticationsController extends Controller
     {
         $params = $request->getParam('user');
         $user = User::findByEmail($params['email']);
-        //dd($user);
+        $master = Master::findByEmail($params['email']);
 
-        if ($user && $user->authenticate($params['password'])) {
+        if ($master && $master->authenticate($params['password'])) {
+            Auth::login($master);
+            FlashMessage::success('Login realizado com sucesso!');
+            $this->redirectTo(route('list.appointaments'));
+        } elseif ($user && $user->authenticate($params['password'])) {
             Auth::login($user);
             FlashMessage::success('Login realizado com sucesso!');
             $this->redirectTo(route('list.appointaments'));

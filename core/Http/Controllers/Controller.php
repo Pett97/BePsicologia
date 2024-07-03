@@ -3,6 +3,7 @@
 namespace Core\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Master;
 use Core\Constants\Constants;
 use Lib\Authentication\Auth;
 
@@ -10,14 +11,14 @@ class Controller
 {
     protected string $layout = 'application';
 
-    protected ?User $current_user = null;
+    protected User|Master|null $current_user = null;
 
     public function __construct()
     {
         $this->current_user = Auth::user();
     }
 
-    public function currentUser(): ?User
+    public function currentUser(): User|Master|null
     {
         if ($this->current_user === null) {
             $this->current_user = Auth::user();
@@ -37,7 +38,6 @@ class Controller
         require Constants::rootPath()->join('/app/views/layouts/' . $this->layout . '.phtml');
     }
 
-
     /**
      * @param array<string, mixed> $data
      */
@@ -48,7 +48,7 @@ class Controller
         $view = Constants::rootPath()->join('app/views/' . $view . '.json.php');
         $json = [];
 
-        header('Content-Type: application/json; chartset=utf-8');
+        header('Content-Type: application/json; charset=utf-8');
         require $view;
         echo json_encode($json);
         return;
