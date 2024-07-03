@@ -5,10 +5,15 @@
         <div class="input-field col s12 m3 l6">
           <input type="hidden" name="_method" value="PUT">
           <select name="fixedSchedule[psychologist_id]">
+            <?php if ($isMaster) : ?>
+              <?php foreach ($users as $user) : ?>
                 <option value="<?= $user->id ?>"><?= $user->name ?></option>
-
-            </select>
-            <label>Selecionar O Responsável</label>
+              <?php endforeach; ?>
+            <?php else : ?>
+              <option value="<?= $user->id ?>"><?= $user->name ?></option>
+            <?php endif; ?>
+          </select>
+          <label>Selecionar O Responsável</label>
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
@@ -22,7 +27,7 @@
         </div>
         <div class="input-field col s12 m12 l6">
           <input type="hidden" name="_method" value="PUT">
-          <input value="<?= $fixedSchedule->end_time?>" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="text" class="validate" name="fixedSchedule[end_time]" required>
+          <input value="<?= $fixedSchedule->end_time ?>" placeholder="Novo Horário de Fim" id="newDayOFWeek" type="text" class="validate" name="fixedSchedule[end_time]" required>
           <label for="newEndTime">Horario FIm</label>
         </div>
       </div>
