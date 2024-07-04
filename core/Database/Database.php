@@ -35,14 +35,14 @@ class Database
     public static function create(): void
     {
         $sql = 'DROP DATABASE IF EXISTS ' . $_ENV['DB_DATABASE'] . ';';
-        error_log("Executing SQL: " . $sql);
+        //error_log("Executing SQL: " . $sql);
         self::getConn()->exec($sql);
 
         $sql = 'CREATE DATABASE IF NOT EXISTS ' . $_ENV['DB_DATABASE'] . ';';
-        error_log("Executing SQL: " . $sql);
+        //error_log("Executing SQL: " . $sql);
         self::getConn()->exec($sql);
 
-        error_log("Database created");
+        //error_log("Database created");
     }
 
     public static function drop(): void

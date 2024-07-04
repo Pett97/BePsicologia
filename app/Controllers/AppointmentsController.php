@@ -47,14 +47,32 @@ class AppointmentsController extends Controller
             $clients = Client::all();
             $users = User::all();
             $title = 'Novo Agendamento';
-            $this->render('appointments/new_appointment', compact('appointment', "clients", "users", 'title'));
+            $this->render(
+                'appointments/new_appointment',
+                compact(
+                    'appointment',
+                    "clients",
+                    "users",
+                    'title',
+                    "isMaster"
+                )
+            );
         } else {
             $isMaster = false;
             $appointment = $this->current_user->appointments()->new();
             $clients = Client::all();
-            $users = User::all();
+            $user = $this->current_user;
             $title = 'Novo Agendamento';
-            $this->render('appointments/new_appointment', compact('appointment', "clients", "users", 'title'));
+            $this->render(
+                'appointments/new_appointment',
+                compact(
+                    'appointment',
+                    "clients",
+                    "user",
+                    'title',
+                    "isMaster"
+                )
+            );
         }
     }
 
@@ -69,27 +87,15 @@ class AppointmentsController extends Controller
             'end_time' => $params["appointment"]["end_time"],
             'client_id' => $params["appointment"]["client_id"]
         ];
-        if (!Auth::isMaster()) {
-            $appointment = new Appointment($testAppointament);
-            $appointment = $this->current_user->appointments()->new($params['appointment']);
 
-            if ($appointment->save()) {
-                FlashMessage::success("Agendamento Salvo Com Sucesso");
-                $this->redirectTo(route("list.appointaments"));
-            } else {
-                $title = "Novo Agendamento";
-                $this->render("appointments/new_appointment", compact("appointment", "title"));
-            }
-        } else {
-            $appointment = new Appointment($testAppointament);
-            if ($appointment->save()) {
-                FlashMessage::success("Agendamento Salvo Com Sucesso");
-                $this->redirectTo(route("list.appointaments"));
-            } else {
-                $title = "Novo Agendamento";
-                $this->render("appointments/new_appointment", compact("appointment", "title"));
-            }
-        }
+        $appointment = new Appointment($testAppointament);
+
+        FlashMessage::success("Agendamento Salvo Com Sucesso");
+        $this->redirectTo(route("list.appointaments"));
+
+        $users = User::all();
+        $title = "Novo Agendamento";
+        $this->render("appointments/new_appointment", compact("appointment", "title", "users"));
     }
 
 
